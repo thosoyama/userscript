@@ -12,7 +12,7 @@
 1. ユーザースクリプトのインストール
  * 下記よりスクリプト名をクリックするとインストール用の画面やダイアログが出るのでインストールしてください。
 
-## 各ユーザースクリプトの概要
+## ユーザースクリプト
 
 * [github_liquid_layout.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/github_liquid_layout.user.js)
  * GitHubを横幅固定からリキッドレイアウトにします。HTMLのレビュー時等で多少は視野が広くなると思います。
