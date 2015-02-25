@@ -16,3 +16,7 @@
 
 * [github_liquid_layout.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/github_liquid_layout.user.js)
  * GitHubを横幅固定からリキッドレイアウトにします。HTMLのレビュー時等で多少は視野が広くなると思います。
+
+* [thashtag.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/thashtag.user.js)
+ * Talknoteの左メニューによく使うハッシュタグの検索リンクを追加します。
+
