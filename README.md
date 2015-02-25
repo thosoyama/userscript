@@ -14,6 +14,9 @@
 
 ## ユーザースクリプト
 
+* [talknote_liquid_layout.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/talknote_liquid_layout.user.js)
+ * Talknoteを横幅固定からリキッドレイアウトにします。遷移時にガクガクします。
+
 * [github_liquid_layout.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/github_liquid_layout.user.js)
  * GitHubを横幅固定からリキッドレイアウトにします。HTMLのレビュー時等で多少は視野が広くなると思います。
 
