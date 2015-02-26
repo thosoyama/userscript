@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        THashTag
-// @namespace   https://company.talknote.com/mediba.jp/
+// @namespace   https://github.com/hosoyama-mediba/userscript
 // @version     0.2
 // @description Talknoteの左メニューにハッシュタグのリンクを追加します
 // @include     https://company.talknote.com/mediba.jp/*
