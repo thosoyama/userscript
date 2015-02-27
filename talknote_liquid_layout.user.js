@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Talknoteリキッドレイアウト
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.2
+// @version      0.3
 // @description  Talknoteリキッドレイアウトにします
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -28,12 +28,14 @@
 .logo_cont {
 	margin-right: -210px !important;
 }
+.action {
+    width: 100% !important;
+}
     */}).toString().replace(/(\n)/g, '').split('*')[1];
     document.getElementsByTagName('head')[0].appendChild(style);
 
     setInterval(function() {
-        $('#container').css({width: '' + ($('#wrapper').width() - $('#left_nav').width() - 35) + 'px'});
         $('#contents').css({width:  '' + ($('#container').width() - $('#right_nav').width() - 50) + 'px'});
-        $('#tab_feed_sort').css({left: '' + ($('#contents').width() - 40) + 'px'});
+        $('#tab_feed_sort').css({left: '' + ($('#contents').width() - 35) + 'px'});
     }, 300);
 })();
