@@ -12,21 +12,21 @@
     var style = document.createElement('style');
     style.textContent = (function () {/*
 #wrapper, #message_text , #share ul.tab_list {
-	width: 100% !important;
+    width: 100% !important;
 }
 #scrollable_wrapper {
     width: auto !important;
     padding: 0 210px 0 15px !important;
 }
 #container {
-	width: 100% !important;
+    width: 100% !important;
     margin-right: -200px !important;
 }
 #left_nav {
-	margin-left: 10px !important;
+    margin-left: 10px !important;
 }
 .logo_cont {
-	margin-right: -210px !important;
+    margin-right: -210px !important;
 }
 #post_message .action {
     width: 100% !important;
