@@ -19,7 +19,7 @@
  * GitHubの差分比較の領域を折り畳むトグルボタンと個別にON/OFF可能なチェックボックスを追加します。
 
 * [talknote_liquid_layout.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/talknote_liquid_layout.user.js)
- * Talknoteを横幅固定からリキッドレイアウトにします。遷移時にガクガクします。
+ * Talknoteを横幅固定からリキッドレイアウトにします。
 
 * [github_liquid_layout.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/github_liquid_layout.user.js)
  * GitHubを横幅固定からリキッドレイアウトにします。HTMLのレビュー時等で多少は視野が広くなると思います。
