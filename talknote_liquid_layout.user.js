@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Talknoteリキッドレイアウト
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.3
+// @version      0.4
 // @description  Talknoteリキッドレイアウトにします
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -28,7 +28,7 @@
 .logo_cont {
 	margin-right: -210px !important;
 }
-.action {
+#post_message .action {
     width: 100% !important;
 }
     */}).toString().replace(/(\n)/g, '').split('*')[1];
