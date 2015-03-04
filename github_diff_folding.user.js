@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         GitHubのdiff表示を折りたたむ
 // @namespace    https://github.com/hosoyama-mediba/userscript/
-// @version      0.1
+// @version      0.2
 // @description  差分比較の領域を折り畳むトグルボタンと個別にON/OFF可能なチェックボックスを追加します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://github.com/*/*
