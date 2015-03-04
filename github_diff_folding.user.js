@@ -10,7 +10,7 @@
 
 (function() {
     setInterval(function() {
-        if (!location.pathname.match(/files$/) || $('.folding-button').size()) {
+        if ((!location.pathname.match(/files$/) && !location.pathname.match(/commit\/[0-9a-zA-Z]+?$/)) || $('.folding-button').size()) {
             return;
         }
         var toggleButton, folding, $foldingCheckbox;
@@ -18,27 +18,27 @@
         folding = false;
 
         $toggleButton = $('<a href="#" class="folding-button minibutton">Folding</a>');
-        $('#diff #toc .button-group').append($toggleButton);
+        $('#toc .button-group').append($toggleButton);
 
         $toggleButton.on('click', function(e) {
             if (folding = !folding) {
                 $(this).addClass('selected')
-                $('.diff-table').hide();
+                $('.file .data.highlight').hide();
             } else {
                 $(this).removeClass('selected')
-                $('.diff-table').show();
+                $('.file .data.highlight').show();
             }
-            $('#diff .show-file-datas input[type="checkbox"]').prop('checked', folding);
+            $('.file .show-file-datas input[type="checkbox"]').prop('checked', folding);
             return false;
         });
 
         $foldingCheckbox = $('<span class="show-file-datas" style="display: inline-block;-webkit-user-select: none;-moz-user-select: none;user-select: none;margin-right:10px;"><label><input type="checkbox"> Hide Lines </label></span>');
-        $('#diff .file-header .file-actions').prepend($foldingCheckbox);
-        $('#diff .show-file-datas input[type="checkbox"]').on('click', function(e) {
+        $('.file-header .file-actions').prepend($foldingCheckbox);
+        $('.show-file-datas input[type="checkbox"]').on('click', function(e) {
             if ($(this).prop('checked')) {
-                $(this).parent().parent().parent().parent().parent().find('.diff-table').hide();
+                $(this).parent().parent().parent().parent().parent().find('.data.highlight').hide();
             } else {
-                $(this).parent().parent().parent().parent().parent().find('.diff-table').show();
+                $(this).parent().parent().parent().parent().parent().find('.data.highlight').show();
             }
         });
     }, 500);
