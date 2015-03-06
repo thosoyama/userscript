@@ -1,11 +1,12 @@
 // ==UserScript==
-// @name         Talknoteリキッドレイアウト
-// @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.5
-// @description  Talknoteリキッドレイアウトにします
-// @author       Terunobu Hosoyama <hosoyama@mediba.jp>
-// @match        https://company.talknote.com/mediba.jp/*
-// @grant        none
+// @name        Talknoteリキッドレイアウト
+// @namespace   https://github.com/hosoyama-mediba/userscript
+// @version     0.5
+// @description Talknoteリキッドレイアウトにします
+// @author      Terunobu Hosoyama <hosoyama@mediba.jp>
+// @match       https://company.talknote.com/mediba.jp/*
+// @grant       none
+// @require     http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js
 // ==/UserScript==
 
 (function() {
