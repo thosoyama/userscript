@@ -1,11 +1,12 @@
 // ==UserScript==
-// @name         GitHubリキッドレイアウト
-// @namespace    https://github.com/hosoyama-mediba/userscript/
-// @version      0.3
-// @description  GitHubを横幅固定からリキッドレイアウトにします
-// @author       Terunobu Hosoyama <hosoyama@mediba.jp>
-// @match        https://github.com/*/*
-// @grant        none
+// @name        GitHubリキッドレイアウト
+// @namespace   https://github.com/hosoyama-mediba/userscript/
+// @version     0.3
+// @description GitHubを横幅固定からリキッドレイアウトにします
+// @author      Terunobu Hosoyama <hosoyama@mediba.jp>
+// @match       https://github.com/*/*
+// @grant       none
+// @require     http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js
 // ==/UserScript==
 
 (function() {
