@@ -1,12 +1,11 @@
 // ==UserScript==
 // @name         Win→Macパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.2
+// @version      0.3
 // @description  ドライブレターから始まるファイルサーバのパスを選択するとMac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
-// @match        http://*/*
-// @match        https://*/*
-// @exclude      https://github.com/*
+// @match        https://company.talknote.com/mediba.jp/*
+// @match        http://au-project.mediba.local/*
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js
 // @grant        none
 // ==/UserScript==
