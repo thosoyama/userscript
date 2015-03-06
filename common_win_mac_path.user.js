@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Win→Macパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.3
+// @version      0.4
 // @description  ドライブレターから始まるファイルサーバのパスを選択するとMac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -17,10 +17,18 @@
     display: block;
     margin: 1em 0;
     padding: 5px;
-    border: 1px solid #c66;
+    border: 1px solid #66f;
     border-radius: 5px;
-    background-color: #fee;
-    color: #c66;
+    background-color: #fff;
+    color: #336;
+    font-size: 14px;
+    font-family: monospace;
+    position: fixed;
+    z-index: 10000;
+    width: 600px;
+    top: 40%;
+    left: 50%;
+    margin-left: -300px;    
 }
     */}).toString().replace(/(\n)/g, '').split('*')[1];
     document.getElementsByTagName('head')[0].appendChild(style);
@@ -34,8 +42,7 @@
             return;
         }
 
-        range = window.getSelection().getRangeAt(0);
-        contents = range.cloneContents();
+        contents = sel.getRangeAt(0).cloneContents();
         if (!contents.hasChildNodes()) {
             return;
         }
@@ -45,12 +52,13 @@
         if (!matches) {
             return;
         }
-        $(range.startContainer.parentNode).append($('<p class="win-mac-path-area">' + 'smb://file03/fileshare' + matches[1].replace(/\\/g, '/') + '</p>'));
 
-        var macRange = document.createRange();
-        macRange.selectNodeContents($('.win-mac-path-area').get(0).firstChild);
+        $('body').append($('<p class="win-mac-path-area">' + 'smb://file03/fileshare' + matches[1].replace(/\\/g, '/') + '</p>'));
+
+        var range = document.createRange();
+        range.selectNodeContents($('.win-mac-path-area').get(0).firstChild);
 
         sel.removeAllRanges();
-        sel.addRange(macRange);
+        sel.addRange(range);
     });
 })();
