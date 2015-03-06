@@ -25,12 +25,13 @@
     */}).toString().replace(/(\n)/g, '').split('*')[1];
     document.getElementsByTagName('head')[0].appendChild(style);
     $(document).on('mouseup', function() {
-        var range, contents, target, matches;
+        var sel, range, contents, target, matches;
 
         $('.win-mac-path-area').remove();
 
-        if (window.getSelection().type !== 'Range') {
-            $('.win-mac-path-area').remove();
+        sel = window.getSelection();
+        if (sel.type !== 'Range') {
+            return;
         }
 
         range = window.getSelection().getRangeAt(0);
@@ -38,6 +39,7 @@
         if (!contents.hasChildNodes()) {
             return;
         }
+
         target = contents.firstChild.nodeValue || contents.firstChild.innerHTML;
         matches = target.match(/^[a-zA-Z]:((?:(?:\\[^\\]+)+)\\?)$/);
         if (!matches) {
@@ -45,11 +47,10 @@
         }
         $(range.startContainer.parentNode).append($('<p class="win-mac-path-area">' + 'smb://file03/fileshare' + matches[1].replace(/\\/g, '/') + '</p>'));
 
-        var span = $('.win-mac-path-area').get(0);
-        var targetRange = document.createRange();
-        targetRange.selectNodeContents(span.firstChild);
-        var sel = getSelection();
+        var macRange = document.createRange();
+        macRange.selectNodeContents($('.win-mac-path-area').get(0).firstChild);
+
         sel.removeAllRanges();
-        sel.addRange(targetRange);
+        sel.addRange(macRange);
     });
 })();
