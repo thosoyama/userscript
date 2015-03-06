@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Win⇔Macファイルパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.1.3
+// @version      0.1.4
 // @description  TalknoteかRedmine上でファイルサーバのパスを選択するとWin,Mac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -15,8 +15,8 @@
     style.textContent = (function () {/*
 .win-mac-path-area {
     display: block;
-    margin: 1em 0;
-    padding: 5px;
+    margin: 0;
+    padding: 0;
     border: 1px solid #66f;
     border-radius: 5px;
     background-color: #fff;
@@ -31,10 +31,22 @@
     margin-left: -300px;
     line-height: 1;
 }
+.win-mac-path-area p {
+    margin: 10px;
+}
+.win-mac-path-area hr {
+    display: block;
+    border: 1px solid #66f;
+    border-width:1px 0 0 0;
+}
     */}).toString().replace(/(\n)/g, '').split('*')[1];
     document.getElementsByTagName('head')[0].appendChild(style);
-    $(document).on('mouseup', function() {
-        var sel, range, contents, target, matches, win2mac = true;
+    $(document).on('mouseup', function(e) {
+        var sel, range, contents, target, matches, win2mac = true, $target = $(e.target);
+
+        if ($target.hasClass('win-mac-path-area') || $target.parent().hasClass('win-mac-path-area')) {
+            return;
+        }
 
         $('.win-mac-path-area').remove();
 
@@ -54,10 +66,14 @@
             win2mac = false;
         }
 
+        $('body').append($('<div class="win-mac-path-area"></div>'));
+        $('.win-mac-path-area').append($('<p class="">' + target + '</p>'));
+        $('.win-mac-path-area').append($('<hr>'));
+
         if (win2mac) {
-            $('body').append($('<p class="win-mac-path-area">' + 'smb://file03/fileshare' + matches[1].replace(/\\/g, '/') + '</p>'));
+            $('.win-mac-path-area').append($('<p class="">' + 'smb://file03/fileshare' + matches[1].replace(/\\/g, '/') + '</p>'));
         } else {
-            $('body').append($('<p class="win-mac-path-area">' + 'W:' + matches[1].replace(/\//g, '\\') + '</p>'));
+            $('.win-mac-path-area').append($('<p class="">' + 'W:' + matches[1].replace(/\//g, '\\') + '</p>'));
         }
 
         range = document.createRange();
