@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Win→Macパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.4
+// @version      0.5
 // @description  ドライブレターから始まるファイルサーバのパスを選択するとMac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -38,10 +38,6 @@
         $('.win-mac-path-area').remove();
 
         sel = window.getSelection();
-        if (sel.type !== 'Range') {
-            return;
-        }
-
         contents = sel.getRangeAt(0).cloneContents();
         if (!contents.hasChildNodes()) {
             return;
