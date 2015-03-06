@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Win→Macパス変換
+// @name         Win⇔Macファイルパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.1.2
-// @description  TalknoteかRedmine上でファイルサーバのパスを選択するとMac用に変換したパスを表示します
+// @version      0.1.3
+// @description  TalknoteかRedmine上でファイルサーバのパスを選択するとWin,Mac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
 // @match        http://au-project.mediba.local/*
@@ -34,7 +34,7 @@
     */}).toString().replace(/(\n)/g, '').split('*')[1];
     document.getElementsByTagName('head')[0].appendChild(style);
     $(document).on('mouseup', function() {
-        var sel, range, contents, target, matches;
+        var sel, range, contents, target, matches, win2mac = true;
 
         $('.win-mac-path-area').remove();
 
@@ -47,12 +47,20 @@
         target = contents.firstChild.nodeValue || contents.firstChild.innerHTML;
         matches = target.match(/^(?:[a-zA-Z]:|\\\\FILE03\\fileshare)((?:(?:\\[^\\]+)+)\\?)$/);
         if (!matches) {
-            return;
+            matches = target.match(/^smb:\/\/file03\/fileshare((?:(?:\/[^\/]+)+)\/?)$/);
+            if (!matches) {
+                return;
+            }
+            win2mac = false;
         }
 
-        $('body').append($('<p class="win-mac-path-area">' + 'smb://file03/fileshare' + matches[1].replace(/\\/g, '/') + '</p>'));
+        if (win2mac) {
+            $('body').append($('<p class="win-mac-path-area">' + 'smb://file03/fileshare' + matches[1].replace(/\\/g, '/') + '</p>'));
+        } else {
+            $('body').append($('<p class="win-mac-path-area">' + 'W:' + matches[1].replace(/\//g, '\\') + '</p>'));
+        }
 
-        var range = document.createRange();
+        range = document.createRange();
         range.selectNodeContents($('.win-mac-path-area').get(0).firstChild);
 
         sel.removeAllRanges();
