@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name        バックログのストーリーポイント集計
+// @name        Redmine:マスターバックログのストーリーポイント集計
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.1
+// @version     0.2
 // @description バックログに制作ポイント・開発のポイント・完了ポイントを追加します
 //              小室さんのブックマークレットを勝手に改変
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
@@ -10,10 +10,6 @@
 // ==/UserScript==
 
 (function() {
-    if (!$ || $('#backlogs_container').length !== 1) {
-        alert('ごめんなさい、ここじゃちょっと。');
-        return;
-    }
     var distributor = {
         selector: {
             backlog: '#backlogs_container div.backlog',
@@ -29,7 +25,25 @@
             return context ? $(selector, context) : $(selector);
         },
         style: function(){
-            return '#backlogs_container div.backlog ul.stories li.story-seisaku {background: -webkit-gradient(linear, left top, left bottom, from(#EEE), to(#FAE0E7)); background: -moz-linear-gradient(top, #EEE, #FAE0E7); filter: progid:DXImageTransform.Microsoft.Gradient(Enabled=1,GradientType=0,StartColorStr=#EEEEEE,EndColorStr=#FAE0E7); background-color: #FAE0E7;} #backlogs_container div.backlog ul.stories li.story-kaihatsu {background: -webkit-gradient(linear, left top, left bottom, from(#EEE), to(#E0E7FA)); background: -moz-linear-gradient(top, #EEE, #E0E7FA); filter: progid:DXImageTransform.Microsoft.Gradient(Enabled=1,GradientType=0,StartColorStr=#EEEEEE,EndColorStr=#E0E7FA); background-color: #E0E7FA;}';
+            return (function () {/*
+                #backlogs_container div.backlog ul.stories li.story-seisaku {
+                    background: -webkit-gradient(linear, left top, left bottom, from(#EEE), to(#FAE0E7));
+                    background: -moz-linear-gradient(top, #EEE, #FAE0E7);
+                    filter: progid:DXImageTransform.Microsoft.Gradient(Enabled=1,GradientType=0,StartColorStr=#EEEEEE,EndColorStr=#FAE0E7);
+                    background-color: #FAE0E7;
+                }
+                #backlogs_container div.backlog ul.stories li.story-kaihatsu {
+                    background: -webkit-gradient(linear, left top, left bottom, from(#EEE), to(#E0E7FA));
+                    background: -moz-linear-gradient(top, #EEE, #E0E7FA);
+                    filter: progid:DXImageTransform.Microsoft.Gradient(Enabled=1,GradientType=0,StartColorStr=#EEEEEE,EndColorStr=#E0E7FA);
+                    background-color: #E0E7FA;
+                }
+                .ex-points {
+                   line-height: 28px;
+                   text-align: right;
+                   padding-right: 2px;
+                }
+            */}).toString().replace(/(\n)/g, '').split('*')[1];
         },
         init: function(){
             if ($('#my-style-added').length) {
@@ -56,39 +70,6 @@
                 /* this.reset($backlog); */
             }
         },
-        /*
-        backlog: function(){
-            var that = this,
-                sprint = this.sprint(),
-                $backlog = this.select('backlog').filter(function(){
-                    return that.select('sprint', this).text().indexOf(sprint) > -1;
-                });
-            if (!$backlog.length) {
-                if (confirm('バックログは見つかりませんでした。\nもう一度探しますか？')) {
-                    $backlog = this.backlog();
-                }
-            } else if ($backlog.length > 1) {
-                if (confirm('ごめんなさい、よくわからない…。\nもう一度探しますか？')) {
-                    $backlog = this.backlog();
-                }
-            }
-            return $backlog;
-        },
-        sprint: function(msg, i){
-            msg = msg || '対象スプリントを教えてください。';
-            i = i || 0;
-            var sprint = prompt(msg);
-            if (sprint === null) {
-                throw '';
-            } else if (!sprint.length) {
-                if (i > 10) {
-                    throw 'ごめんなさい、もういいです';
-                }
-                sprint = this.sprint('何か入れてください…。', ++i);
-            }
-            return sprint;
-        },
-        */
         story: function($backlog, end){
             var that = this,
                 off = (end.length + 1) * -1,
@@ -103,18 +84,18 @@
             this.story($backlog, '開発').addClass('story-kaihatsu');
         },
         popPoints: function($backlog){
-            var all = this.point(this.select('stories', $backlog)),
-                seisaku = this.point(this.story($backlog, '制作')),
+            var all      = this.point(this.select('stories', $backlog)),
+                closed   = this.point(this.select('closed', $backlog)),
+                seisaku  = this.point(this.story($backlog, '制作')),
                 kaihatsu = this.point(this.story($backlog, '開発')),
-                closed = this.point(this.select('closed', $backlog)),
-                txt = '';
+                txt      = '';
 
             txt += '<span style="margin-left:10px;">制作:' + seisaku.toFixed(1);
             txt += '<span style="margin-left:10px;">開発:' + kaihatsu.toFixed(1) + '</span>';
             txt += '<span style="margin-left:10px;">その他:' + (all - seisaku - kaihatsu).toFixed(1) + '</span>';
             txt += '<span style="margin-left:10px;">完了:' + closed.toFixed(1) + '</span>';
 
-            this.select('header', $backlog).after($('<div class="header"><div class="velocity">' + txt + '</div></div>'));
+            this.select('header', $backlog).after($('<div class="header"><div class="ex-points">' + txt + '</div></div>'));
         },
         point: function($stories){
             var point = 0.0,
