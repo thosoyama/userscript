@@ -19,7 +19,8 @@
             subject: 'div.subject',
             point:   'div.story_points div.t',
             closed:  'ul.stories li.closed',
-            header:  'div.header'
+            header:  'div.header',
+            velocoty:'div.header div.velocity.story_tooltip'
         },
         select: function(name, context){
             var selector = this.selector[name];
@@ -40,9 +41,12 @@
                     background-color: #E0E7FA;
                 }
                 .ex-points {
-                   line-height: 28px;
-                   text-align: right;
-                   padding-right: 2px;
+                    line-height: 30px;
+                    text-align: right;
+                    padding-right: 2px;
+                }
+                #product_backlog_container .header .close_sprint {
+                    width: auto;
                 }
             */}).toString().replace(/(\n)/g, '').split('*')[1];
         },
@@ -90,11 +94,12 @@
                 seisaku  = this.point(this.story($backlog, '制作')),
                 kaihatsu = this.point(this.story($backlog, '開発')),
                 txt      = '';
+            
+            this.select('velocoty', $backlog).text(closed.toFixed(1) + '/' + all.toFixed(1));
 
-            txt += '<span style="margin-left:10px;">制作:' + seisaku.toFixed(1);
-            txt += '<span style="margin-left:10px;">開発:' + kaihatsu.toFixed(1) + '</span>';
-            txt += '<span style="margin-left:10px;">その他:' + (all - seisaku - kaihatsu).toFixed(1) + '</span>';
-            txt += '<span style="margin-left:10px;">終了:' + closed.toFixed(1) + '</span>';
+            txt += '<span style="margin-left:15px;">制作:' + seisaku.toFixed(1);
+            txt += '<span style="margin-left:15px;">開発:' + kaihatsu.toFixed(1) + '</span>';
+            txt += '<span style="margin-left:15px;">その他:' + (all - seisaku - kaihatsu).toFixed(1) + '</span>';
 
             this.select('header', $backlog).after($('<div class="header"><div class="ex-points">' + txt + '</div></div>'));
         },
