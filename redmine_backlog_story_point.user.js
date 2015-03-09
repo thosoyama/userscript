@@ -7,6 +7,7 @@
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://au-project.mediba.local/rb/master_backlog/dolphin
 // @require     http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js
+// @grant       none
 // ==/UserScript==
 
 (function() {
