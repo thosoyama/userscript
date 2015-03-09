@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Redmine:マスターバックログのストーリーポイント集計
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.4
+// @version     0.5
 // @description バックログに制作のポイント・開発のポイント・その他のポイント・終了したポイントを追加します
 //              小室さんのブックマークレットを勝手に改変
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
@@ -20,7 +20,7 @@
             point:   'div.story_points div.t',
             closed:  'ul.stories li.closed',
             header:  'div.header',
-            velocoty:'div.header div.velocity.story_tooltip'
+            velocity:'div.header div.velocity'
         },
         select: function(name, context){
             var selector = this.selector[name];
@@ -93,9 +93,12 @@
                 closed   = this.point(this.select('closed', $backlog)),
                 seisaku  = this.point(this.story($backlog, '制作')),
                 kaihatsu = this.point(this.story($backlog, '開発')),
-                txt      = '';
+                txt      = '',
+                that     = this;
             
-            this.select('velocoty', $backlog).text(closed.toFixed(1) + '/' + all.toFixed(1));
+            setTimeout(function() {
+                that.select('velocity', $backlog).text(closed.toFixed(1) + '/' + all.toFixed(1));
+            }, 500);
 
             txt += '<span style="margin-left:15px;">制作:' + seisaku.toFixed(1);
             txt += '<span style="margin-left:15px;">開発:' + kaihatsu.toFixed(1) + '</span>';
