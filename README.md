@@ -14,7 +14,7 @@
 
 ## ユーザースクリプト
 
-* [common_win_mac_path.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/redmine_backlog_story_point.user.js)
+* [redmine_backlog_story_point.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/redmine_backlog_story_point.user.js)
  * Redmineのバックログに制作ポイント、開発ポイント、その他ポイント、完了ポイントを追加。by 小室氏のブックマークレット。
 
 * [common_win_mac_path.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/common_win_mac_path.user.js)
