@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name        Redmine:マスターバックログのストーリーポイント集計
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.2
-// @description バックログに制作ポイント・開発のポイント・完了ポイントを追加します
+// @version     0.3
+// @description バックログに制作のポイント・開発のポイント・その他のポイント・終了したポイントを追加します
 //              小室さんのブックマークレットを勝手に改変
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://au-project.mediba.local/rb/master_backlog/dolphin
@@ -94,7 +94,7 @@
             txt += '<span style="margin-left:10px;">制作:' + seisaku.toFixed(1);
             txt += '<span style="margin-left:10px;">開発:' + kaihatsu.toFixed(1) + '</span>';
             txt += '<span style="margin-left:10px;">その他:' + (all - seisaku - kaihatsu).toFixed(1) + '</span>';
-            txt += '<span style="margin-left:10px;">完了:' + closed.toFixed(1) + '</span>';
+            txt += '<span style="margin-left:10px;">終了:' + closed.toFixed(1) + '</span>';
 
             this.select('header', $backlog).after($('<div class="header"><div class="ex-points">' + txt + '</div></div>'));
         },
