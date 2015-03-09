@@ -14,8 +14,11 @@
 
 ## ユーザースクリプト
 
+* [common_win_mac_path.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/redmine_backlog_story_point.user.js)
+ * Redmineのバックログに制作ポイント、開発ポイント、その他ポイント、完了ポイントを追加。by 小室氏のブックマークレット。
+
 * [common_win_mac_path.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/common_win_mac_path.user.js)
- * ドライブレターから始まるファイルサーバのパスを選択するとMac用に変換したパスを表示します。ちょっと中途半端。
+ * ファイルサーバのパスを選択するとMac用に変換したパスを表示します。
 
 * [github_diff_folding.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/github_diff_folding.user.js)
  * GitHubの差分比較の領域を折り畳むトグルボタンと個別にON/OFF可能なチェックボックスを追加します。
