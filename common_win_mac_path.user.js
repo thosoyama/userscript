@@ -51,6 +51,9 @@
         $('.win-mac-path-area').remove();
 
         sel = window.getSelection();
+        if (!sel.rangeCount) {
+            return;
+        }
         contents = sel.getRangeAt(0).cloneContents();
         if (!contents.hasChildNodes()) {
             return;
