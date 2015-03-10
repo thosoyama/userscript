@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Redmine:マスターバックログのストーリーポイント集計
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.5
+// @version     0.6
 // @description バックログに制作のポイント・開発のポイント・その他のポイント・終了したポイントを追加します
 //              小室さんのブックマークレットを勝手に改変
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
@@ -16,6 +16,7 @@
             backlog: '#backlogs_container div.backlog',
             sprint:  'div.header div.name',
             stories: 'ul.stories li',
+            id:      'div.id div.v',
             subject: 'div.subject',
             point:   'div.story_points div.t',
             closed:  'ul.stories li.closed',
@@ -45,18 +46,19 @@
                     text-align: right;
                     padding-right: 2px;
                 }
+                .ex-copy-btn {
+                    float: left;
+                    margin: 5px;
+                }
                 #product_backlog_container .header .close_sprint {
                     width: auto;
                 }
             */}).toString().replace(/(\n)/g, '').split('*')[1];
         },
         init: function(){
-            if ($('#my-style-added').length) {
-                return;
-            }
             var $style = $('<style/>').attr({type: 'text/css', id: 'my-style-added'});
             $style.text(this.style());
-            $('head').append($style);
+            $('head').append($style).append($('<script/>').attr({src: 'http://cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.1.5/ZeroClipboard.min.js'}));
         },
         run: function(){
             this.select('stories').removeClass('story-seisaku story-kaihatsu');
@@ -72,6 +74,7 @@
                 }
                 this.color($backlog);
                 this.popPoints($backlog);
+                this.copyButton($backlog);
                 /* this.reset($backlog); */
             }
         },
@@ -105,6 +108,29 @@
             txt += '<span style="margin-left:15px;">その他:' + (all - seisaku - kaihatsu).toFixed(1) + '</span>';
 
             this.select('header', $backlog).after($('<div class="header"><div class="ex-points">' + txt + '</div></div>'));
+        },
+        copyButton: function($backlog) {
+            if (!navigator.mimeTypes['application/x-shockwave-flash']) {
+                return;
+            }
+            var that = this;
+            setTimeout(function() {
+                var clip, $button = $('<button class="ex-copy-btn" data-clipboard-text="">コピー</button>');
+                $('.ex-points', $backlog).before($button);
+                clip = new ZeroClipboard($button.get(0));
+                clip.on('ready', function() {
+                    clip.on("beforecopy", function() {
+                        var copyText = '';
+                        that.select('stories', $backlog).each(function() {
+                            var id    = that.select('id', $(this)).text(),
+                                point = that.select('point', $(this)).text(),
+                                title = that.select('subject', $(this)).text();
+                            copyText += '#' + id.trim() + ' ' + (!point.trim().length ? 'x.x' : point.trim()) + 'pt ' + title.trim() + '\n';
+                        });
+                        $button.get(0).dataset.clipboardText = copyText;
+                    });
+                });
+            }, 500);
         },
         point: function($stories){
             var point = 0.0,
