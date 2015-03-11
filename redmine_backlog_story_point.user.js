@@ -59,12 +59,16 @@
                     background-color:#CCC;
                     background: -webkit-gradient(linear, left top, left bottom, from(#EEE), to(#CCC));
                     background: -moz-linear-gradient(top, #EEE, #CCC);
-                    filter:progid:DXImageTransform.Microsoft.Gradient(Enabled=1,GradientType=0,StartColorStr=#EEEEEE,EndColorStr=#CCCCCC);
                     text-decoration:none;
                     -moz-border-radius:4px;
                     -webkit-border-radius:4px;
                     border-radius:4px;
                     border: 1px solid #AAAAAA
+                }
+                .ex-copy-btn-hover {
+                    background-color:#BBB;
+                    background: -webkit-gradient(linear, left top, left bottom, from(#DDD), to(#BBB));
+                    background: -moz-linear-gradient(top, #DDD, #BBB);
                 }
                 #product_backlog_container .header .close_sprint {
                     width: auto !important;
@@ -133,10 +137,20 @@
             if (!navigator.mimeTypes['application/x-shockwave-flash']) {
                 return;
             }
-            var that = this;
-            setTimeout(function() {
+            var that  = this,
+                timer = setInterval(function() {
+                if (typeof ZeroClipboard !== 'function') {
+                    return;
+                }
                 var clip, $button = $('<button class="ex-copy-btn" data-clipboard-text="">コピー</button>');
                 $('.ex-points', $backlog).before($button);
+                $button.hover(
+                    function() {
+                        $(this).addClass('ex-copy-btn-hover')
+                    }, function() {
+                        $(this).removeClass('ex-copy-btn-hover')
+                    }
+                );
                 clip = new ZeroClipboard($button.get(0));
                 clip.on('ready', function() {
                     clip.on("beforecopy", function() {
@@ -150,7 +164,8 @@
                         $button.get(0).dataset.clipboardText = copyText;
                     });
                 });
-            }, 500);
+                clearInterval(timer);
+            }, 300);
         },
         point: function($stories){
             var point = 0.0,
