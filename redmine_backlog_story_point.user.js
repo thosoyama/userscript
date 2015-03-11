@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Redmine:マスターバックログのストーリーポイント集計
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.6
+// @version     0.7
 // @description バックログに制作のポイント・開発のポイント・その他のポイント・終了したポイントを追加します
 //              小室さんのブックマークレットを勝手に改変
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
@@ -47,11 +47,31 @@
                     padding-right: 2px;
                 }
                 .ex-copy-btn {
+                    display:block;
                     float: left;
-                    margin: 5px;
+                    margin: 7px 0 0 3px;
+                    padding: 0;
+                    width:45px;
+                    line-height:14px;
+                    font-size:10px;
+                    text-align:center;
+                    color: #CC0000;
+                    background-color:#CCC;
+                    background: -webkit-gradient(linear, left top, left bottom, from(#EEE), to(#CCC));
+                    background: -moz-linear-gradient(top, #EEE, #CCC);
+                    filter:progid:DXImageTransform.Microsoft.Gradient(Enabled=1,GradientType=0,StartColorStr=#EEEEEE,EndColorStr=#CCCCCC);
+                    text-decoration:none;
+                    -moz-border-radius:4px;
+                    -webkit-border-radius:4px;
+                    border-radius:4px;
+                    border: 1px solid #AAAAAA
                 }
                 #product_backlog_container .header .close_sprint {
-                    width: auto;
+                    width: auto !important;
+                }
+                .header .fff-right {
+                    width: 238px !important;
+                    margin-left: -238px !important;
                 }
             */}).toString().replace(/(\n)/g, '').split('*')[1];
         },
