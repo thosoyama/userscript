@@ -162,6 +162,7 @@
                             copyText += '#' + id.trim() + ' ' + (!point.trim().length ? 'x.x' : point.trim()) + 'pt ' + title.trim() + '\n';
                         });
                         $button.get(0).dataset.clipboardText = copyText;
+                        copyText && alert('クリップボードにコピーしました\n\n' + copyText);
                     });
                 });
                 clearInterval(timer);
