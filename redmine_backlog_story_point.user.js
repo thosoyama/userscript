@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Redmine:マスターバックログのストーリーポイント集計
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.7
+// @version     0.8
 // @description バックログに制作のポイント・開発のポイント・その他のポイント・終了したポイントを追加します
 //              小室さんのブックマークレットを勝手に改変
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
