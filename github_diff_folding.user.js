@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         GitHubのdiff表示を折りたたむ
 // @namespace    https://github.com/hosoyama-mediba/userscript/
-// @version      0.3
+// @version      0.4
 // @description  差分比較の領域を折り畳むトグルボタンと個別にON/OFF可能なチェックボックスを追加します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://github.com/*/*
@@ -24,9 +24,11 @@
             if (folding = !folding) {
                 $(this).addClass('selected')
                 $('.file .data.highlight').hide();
+                $('.file .render-wrapper').hide();
             } else {
                 $(this).removeClass('selected')
                 $('.file .data.highlight').show();
+                $('.file .render-wrapper').show();
             }
             $('.file .show-file-datas input[type="checkbox"]').prop('checked', folding);
             return false;
@@ -35,11 +37,15 @@
         $foldingCheckbox = $('<span class="show-file-datas" style="display: inline-block;-webkit-user-select: none;-moz-user-select: none;user-select: none;margin-right:10px;"><label><input type="checkbox"> Hide Lines </label></span>');
         $('.file-header .file-actions').prepend($foldingCheckbox);
         $('.show-file-datas input[type="checkbox"]').on('click', function(e) {
+            $parent = $(this).parent().parent().parent().parent().parent();
             if ($(this).prop('checked')) {
-                $(this).parent().parent().parent().parent().parent().find('.data.highlight').hide();
+                $parent.find('.data.highlight').hide();
+                $parent.find('.render-wrapper').hide();
             } else {
-                $(this).parent().parent().parent().parent().parent().find('.data.highlight').show();
+                $parent.find('.data.highlight').show();
+                $parent.find('.render-wrapper').show();
             }
+            $parent = null;
         });
     }, 500);
 })();
