@@ -29,6 +29,7 @@
             left: 50%;
             margin-left: -300px;
             line-height: 1;
+            box-shadow: 10px 10px 10px rgba(0,0,0,0.4);
         }
         .win-mac-path-area a {
             display: block;
