@@ -5,6 +5,7 @@
 // @description Redmineのニュースでチケットのプレビュー表示します。
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://au-project.mediba.local/news/*
+// @grant       none
 // ==/UserScript==
 
 (function() {
