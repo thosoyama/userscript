@@ -6,6 +6,7 @@
 // @include     https://company.talknote.com/mediba.jp/*
 // @exclude
 // @require     http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js
+// @grant       none
 // ==/UserScript==
 
 (function() {
