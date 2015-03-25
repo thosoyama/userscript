@@ -14,6 +14,9 @@
 
 ## ユーザースクリプト
 
+* [redmine_news.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/redmine_news.user.js)
+ * Redmineのニュースでチケットのプレビュー表示します。
+
 * [redmine_backlog_story_point.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/redmine_backlog_story_point.user.js)
  * Redmineのバックログに制作ポイント、開発ポイント、その他ポイント、完了ポイントを追加。by 小室氏のブックマークレット。
 
