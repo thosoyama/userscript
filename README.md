@@ -33,5 +33,5 @@
  * GitHubを横幅固定からリキッドレイアウトにします。HTMLのレビュー時等で多少は視野が広くなると思います。
 
 * [thashtag.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/thashtag.user.js)
- * Talknoteの左メニューによく使うハッシュタグの検索リンクを追加します。
+ * Talknoteの左メニューによく使う検索ワードのリンクを追加します。自分で追加できます。
 
