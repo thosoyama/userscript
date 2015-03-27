@@ -11,6 +11,9 @@
 
 (function() {
     var $style = $('<style/>').text((function () {/*
+        .thashtag-link {
+            position: relative;
+        }
         .thashtag-form__span {
             line-height: 1;
             height: 27px;
@@ -66,7 +69,7 @@
             ];
 
             createNewLink = function(word, necessary) {
-                var $link = $('<a/>').attr({href: urlPrefix + encodeURIComponent(word), title: word}).html(word);
+                var $link = $('<a/>').attr({href: urlPrefix + encodeURIComponent(word), title: word, class: 'thashtag-link'}).html(word);
                 if (!necessary) {
                     var $deleteButton = $('<span class="thashtag-form__del" data-key="' + word + '" title="削除">✕</span>');
                     $deleteButton.on('click', function() {
