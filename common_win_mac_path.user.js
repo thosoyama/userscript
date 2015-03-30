@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Win⇔Macファイルパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.7
+// @version      0.8
 // @description  TalknoteかRedmine上でファイルサーバのパスを選択するとWin,Mac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -55,7 +55,7 @@
     */}).toString().replace(/(\n)/g, '').split('*')[1];
     document.getElementsByTagName('head')[0].appendChild(style);
     $(document).on('mouseup', function(e) {
-        var sel, range, contents, target, matches, win2mac = true, $target = $(e.target), url;
+        var sel, range, target, matches, win2mac = true, $target = $(e.target), url;
 
         if ($target.hasClass('win-mac-path-area') || $target.parent().hasClass('win-mac-path-area')) {
             return;
@@ -64,18 +64,11 @@
         $('.win-mac-path-area').remove();
 
         sel = window.getSelection();
-        if (!sel.rangeCount) {
+        if (!sel) {
             return;
         }
-        contents = sel.getRangeAt(0).cloneContents();
-        if (!contents.hasChildNodes()) {
-            return;
-        }
-        if (contents.childNodes.length) {
-            contents = contents.childNodes[0];
-        }
-        target = contents.nodeValue || contents.innerText || contents.innerHTML;
-        if (typeof target === 'undefined') {
+        target = sel.toString();
+        if (!target) {
             return;
         }
         target = target.replace(/\r?\n.*/gm, '');
