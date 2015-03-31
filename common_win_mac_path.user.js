@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Win⇔Macファイルパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      1.1
+// @version      1.2
 // @description  TalknoteかRedmine上でファイルサーバのパスを選択するとWin,Mac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -72,8 +72,10 @@
             s.removeAllRanges();
             s.addRange(r);
         }, 0);
+    }).on('click', function() {
+        $dialog.hide();
     });
-    
+
     $(document).on('mouseup', function(e) {
         if ($(e.target).hasClass('ex-win2mac') || $(e.target).parent().hasClass('ex-win2mac')) {
             return;
@@ -86,19 +88,29 @@
             return;
         }
 
-        var matches = selectedText.match(/^(?:[a-zA-Z]:|\\\\FILE03\\fileshare)((?:(?:\\[^\\]+)+)\\?)$/i);
+        var matches = selectedText.match(/^(?:([a-zA-Z]):|\\\\(FILE0\d)\\fileshare)((?:(?:\\[^\\]+)+)\\?)$/i);
         var win2mac = true;
         if (!matches) {
-            matches = selectedText.match(/^smb:\/\/file03\/fileshare((?:(?:\/[^\/]+)+)\/?)$/i);
+            matches = selectedText.match(/^smb:\/\/(file0\d)(?:\.mediba\.local)?\/fileshare((?:(?:\/[^\/]+)+)\/?)$/i);
             if (!matches) {
                 return;
             }
             win2mac = false;
         }
-
+        var volume = (matches[1] || matches[2]).toLowerCase();
+        var win2macVolumeMap = {
+            file02 : 'file02',
+            file03 : 'file03',
+            v      : 'file02',
+            w      : 'file03'
+        };
+        var mac2winVolumeMap = {
+            file02 : 'V',
+            file03 : 'W'
+        };
         var convertedText = win2mac
-            ? 'smb://file03/fileshare' + matches[1].replace(/\\/g, '/')
-            : 'W:' + matches[1].replace(/\//g, '\\');
+            ? 'smb://' + win2macVolumeMap[volume] + '/fileshare' + matches[3].replace(/\\/g, '/')
+            : mac2winVolumeMap[volume] + ':'+ matches[2].replace(/\//g, '\\');
 
         var $1stLink = $('.ex-win2mac__link:first-child').attr({href: selectedText}).text(selectedText);
         var $2ndLink = $('.ex-win2mac__link:last-child').attr({href: convertedText}).text(convertedText);
