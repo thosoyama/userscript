@@ -40,9 +40,13 @@
             text-decoration: none;
         }
         .ex-win2mac a:focus {
-            outline: 3px solid #49c;
+            outline: 3px solid ##008CB9;
             outline-radius: 5px;
             outline-offset: -1px;
+            background-color: #cceeff;
+        }
+        .ex-win2mac a::selection {
+            background: transparent;
         }
         .ex-win2mac hr {
             display: block;
