@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        日報入力
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.1
+// @version     0.2
 // @description 日報入力をちょっとだけ楽にするやつ
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://mediba-pjtweb01/ip_web/*
@@ -12,7 +12,8 @@
 (function() {
 
     // プロジェクトコード
-    var projectNo = ['MP', '00000537', '012'];
+    //var projectNo = ['MP', '00000537', '012'];
+    var projectNo = ['MP', '00000633', '001'];
 
     // トップ
     if (location.pathname.match(/^\/ip_web\/$/)) {
