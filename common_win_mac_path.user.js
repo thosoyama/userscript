@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Win⇔Macファイルパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      1.2
+// @version      1.3
 // @description  TalknoteかRedmine上でファイルサーバのパスを選択するとWin,Mac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -21,7 +21,7 @@
             background-color: #fff;
             color: #336;
             font-size: 14px;
-            font-family: monospace;
+            font-family: Ricty, Osaka-mono, "Osaka-等幅", "ＭＳ ゴシック", monospace;
             position: fixed;
             z-index: 10000;
             width: 600px;
