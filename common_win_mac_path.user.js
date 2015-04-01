@@ -17,7 +17,7 @@
             margin: 0;
             padding: 0;
             border: 1px solid #169;
-            border-radius: 5px;
+            border-radius: 3px;
             background-color: #fff;
             color: #336;
             font-size: 14px;
