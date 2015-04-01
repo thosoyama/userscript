@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Win⇔Macファイルパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      1.3
+// @version      1.4
 // @description  TalknoteかRedmine上でファイルサーバのパスを選択するとWin,Mac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -63,8 +63,9 @@
         .append($('<hr>'))
         .append($('<a href="" class="ex-win2mac__link" tabindex="10002"></a>'));
 
-    $('.ex-win2mac__link').on('focus', function(e) {
+    $('.ex-win2mac__link').on('mouseover focus', function(e) {
         var self = this;
+        this.focus();
         setTimeout(function() {
             var r = document.createRange();
             var s = window.getSelection();
