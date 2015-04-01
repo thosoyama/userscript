@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Win⇔Macファイルパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      1.6
+// @version      1.7
 // @description  TalknoteかRedmine上でファイルサーバのパスを選択するとWin,Mac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -46,6 +46,9 @@
             background-color: #cceeff;
         }
         .ex-win2mac a::selection {
+            background: transparent;
+        }
+        .ex-win2mac a::-moz-selection {
             background: transparent;
         }
         .ex-win2mac hr {
