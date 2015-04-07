@@ -9,6 +9,7 @@
 1. 拡張のインストール
  * Google Chromeの場合は[Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=ja)拡張をインストールしてください。
  * Firefoxの場合は[greasemoneky](https://addons.mozilla.org/ja/firefox/addon/greasemonkey/)アドオンをインストールしてください。
+ * Safariの場合は[tampermonkey.net](https://tampermonkey.net)から拡張をダウンロードしてインストールしてください。
 1. ユーザースクリプトのインストール
  * 下記よりスクリプト名をクリックするとインストール用の画面やダイアログが出るのでインストールしてください。
 
