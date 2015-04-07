@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        Redmineの文書のリンクをツリー構造を持たせるやつ
+// @name        Redmine文書のタイトルをツリー構造化
 // @namespace   https://github.com/hosoyama-mediba/userscript
 // @version     0.1
 // @description 文書のタイトルをスラッシュで区切ると階層構造になります
