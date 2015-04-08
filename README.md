@@ -15,6 +15,9 @@
 
 ## ユーザースクリプト
 
+* [redmine_documents_tree.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/redmine_documents_tree.user.js)
+ * Redmineの文書ページのリンクを階層構造を持たせて表示します。
+
 * [redmine_news.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/redmine_news.user.js)
  * Redmineのニュースでチケットのプレビュー表示します。
 
