@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Redmine文書のタイトルをツリー構造化
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.3
+// @version     0.4
 // @description 文書のタイトルをスラッシュで区切ると階層構造になります
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://au-project.mediba.local/projects/*/documents
