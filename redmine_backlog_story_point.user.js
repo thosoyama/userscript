@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Redmine:マスターバックログのストーリーポイント集計
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.8
+// @version     0.9
 // @description バックログに制作のポイント・開発のポイント・その他のポイント・終了したポイントを追加します
 //              小室さんのブックマークレットを勝手に改変
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
@@ -41,6 +41,23 @@
                     filter: progid:DXImageTransform.Microsoft.Gradient(Enabled=1,GradientType=0,StartColorStr=#EEEEEE,EndColorStr=#E0E7FA);
                     background-color: #E0E7FA;
                 }
+                #backlogs_container div.backlog ul.stories li.story-separator {
+                    background: -webkit-gradient(linear, left top, left bottom, from(#EEE), to(#ccc));
+                    background: -moz-linear-gradient(top, #EEE, #ccc);
+                    filter: progid:DXImageTransform.Microsoft.Gradient(Enabled=1,GradientType=0,StartColorStr=#EEEEEE,EndColorStr=#ccc);
+                    background-color: #ccc;
+                }
+                #backlogs_container div.backlog ul.stories li.story-separator .subject {
+                    padding: 0;
+                    min-height: 28px;
+                    line-height: 28px;
+                }
+                #backlogs_container div.backlog ul.stories li:hover {
+                    background: -webkit-gradient(linear, left top, left bottom, from(#EEE), to(#FFF));
+                    background: -moz-linear-gradient(top, #EEE, #FFF);
+                    filter: progid:DXImageTransform.Microsoft.Gradient(Enabled=1,GradientType=0,StartColorStr=#EEEEEE,EndColorStr=#FFFFFF);
+                    background-color: #FFF;
+                }
                 .ex-points {
                     line-height: 30px;
                     text-align: right;
@@ -77,6 +94,10 @@
                     width: 238px !important;
                     margin-left: -238px !important;
                 }
+                .ex-separator-subject {
+                    margin: 0;
+                    text-align: center;
+                }
             */}).toString().replace(/(\n)/g, '').split('*')[1];
         },
         init: function(){
@@ -85,7 +106,7 @@
             $('head').append($style).append($('<script/>').attr({src: 'http://cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.1.5/ZeroClipboard.min.js'}));
         },
         run: function(){
-            this.select('stories').removeClass('story-seisaku story-kaihatsu');
+            this.select('stories').removeClass('story-seisaku story-kaihatsu story-separator');
             var $backlogs = this.select('backlog'),
                 $backlog,
                 i,
@@ -102,10 +123,10 @@
                 /* this.reset($backlog); */
             }
         },
-        story: function($backlog, end){
+        story: function($backlog, end, isSeparator){
             var that = this,
                 off = (end.length + 1) * -1,
-                regexp = new RegExp('/[ 　]*' + end + '$');
+                regexp = new RegExp((isSeparator ? '' : '/[ 　]*') + end + '$');
             return this.select('stories', $backlog).filter(function(){
                 //return that.select('subject', this).text().trim().slice(off) === '/' + end;
                 return that.select('subject', this).text().trim().match(regexp);
@@ -114,6 +135,13 @@
         color: function($backlog){
             this.story($backlog, '制作').addClass('story-seisaku');
             this.story($backlog, '開発').addClass('story-kaihatsu');
+            this.separator(this.story($backlog, '■■■■', true));
+        },
+        separator: function($story){
+            $story.addClass('story-separator');
+            $story.find('.subject').addClass('ex-separator-subject');
+            $story.find('.fff-left').hide();
+            $story.find('.fff-right').hide();
         },
         popPoints: function($backlog){
             var all      = this.point(this.select('stories', $backlog)),
