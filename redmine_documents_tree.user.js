@@ -65,6 +65,9 @@ function objectSort(object) {
         .attachments p {
             margin: 0 0 12px 0 !important;
         }
+        .contextual a {
+            cursor: pointer;
+        }
     */}).toString().replace(/(\n)/g, '').split('*')[1];
     document.getElementsByTagName('head')[0].appendChild(style);
 
@@ -105,7 +108,7 @@ function objectSort(object) {
             html += '<li>';
             html += '<a class="ex-target collapsible collapsed" href="' + dic[key].data.attr('href') + '">' + dic[key].data.data('name') + '</a>';
             html += '<span class="author">' + dic[key].data.data('update') + '</span>';
-            html += '<a href="' + dic[key].data.attr('href') + '" target="_blank"><img src="/images/bullet_go.png" style="vertical-align:text-bottom;"></a>';
+            html += '<a class="ex-document-link" href="' + dic[key].data.attr('href') + '" target="_blank"><img src="/images/bullet_go.png" style="vertical-align:text-bottom;"></a>';
             html += '</li>';
         } else {
             html += '<li class=""><a class="ex-parent collapsible">' + key + '</a></li>';
