@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Redmine文書のタイトルをツリー構造化
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.2
+// @version     0.3
 // @description 文書のタイトルをスラッシュで区切ると階層構造になります
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://au-project.mediba.local/projects/*/documents
@@ -169,16 +169,18 @@ function objectSort(object) {
 
     var $openAll = $('<a class="icon icon-zoom-in">すべて展開</a>');
     $openAll.on('click', function() {
-        $('.ex-parent').parent().siblings().toggle('fast');
-        $('.ex-parent').toggleClass('collapsed');
-        if ($('.ex-parent').hasClass('collapsed')) {
-            $openAll.text('すべて展開');
-            $openAll.removeClass('icon-zoom-out');
-            $openAll.addClass('icon-zoom-in');
-        } else {
+        if ($(this).hasClass('icon-zoom-in')) {
+            $('.ex-parent').parent().siblings().show('fast');
+            $('.ex-parent').removeClass('collapsed');
+            $openAll.toggleClass('icon-zoom-in');
+            $openAll.toggleClass('icon-zoom-out');
             $openAll.text('すべて畳む');
-            $openAll.removeClass('icon-zoom-in');
-            $openAll.addClass('icon-zoom-out');
+        } else {
+            $('.ex-parent').parent().siblings().hide('fast');
+            $('.ex-parent').addClass('collapsed');
+            $openAll.toggleClass('icon-zoom-in');
+            $openAll.toggleClass('icon-zoom-out');
+            $openAll.text('すべて展開');
         }
     });
     $('.contextual').prepend($openAll);
