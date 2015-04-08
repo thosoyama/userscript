@@ -175,12 +175,18 @@ function objectSort(object) {
             $openAll.toggleClass('icon-zoom-in');
             $openAll.toggleClass('icon-zoom-out');
             $openAll.text('すべて畳む');
+            $('.ex-target').each(function() {
+                $(this).siblings().find('.attachments').show('fast');
+            });
         } else {
             $('.ex-parent').parent().siblings().hide('fast');
             $('.ex-parent').addClass('collapsed');
             $openAll.toggleClass('icon-zoom-in');
             $openAll.toggleClass('icon-zoom-out');
             $openAll.text('すべて展開');
+            $('.ex-target').each(function() {
+                $(this).siblings().find('.attachments').hide('fast');
+            });
         }
     });
     $('.contextual').prepend($openAll);
