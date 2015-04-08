@@ -176,7 +176,10 @@ function objectSort(object) {
             $openAll.toggleClass('icon-zoom-out');
             $openAll.text('すべて畳む');
             $('.ex-target').each(function() {
-                $(this).siblings().find('.attachments').show('fast');
+                if ($(this).siblings().find('.attachments').size()) {
+                    $(this).siblings().find('.attachments').show('fast');
+                    $(this).removeClass('collapsed');
+                }
             });
         } else {
             $('.ex-parent').parent().siblings().hide('fast');
@@ -185,7 +188,10 @@ function objectSort(object) {
             $openAll.toggleClass('icon-zoom-out');
             $openAll.text('すべて展開');
             $('.ex-target').each(function() {
-                $(this).siblings().find('.attachments').hide('fast');
+                if ($(this).siblings().find('.attachments').size()) {
+                    $(this).siblings().find('.attachments').hide('fast');
+                    $(this).addClass('collapsed');
+                }
             });
         }
     });
