@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Redmine文書のタイトルをツリー構造化
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.1
+// @version     0.2
 // @description 文書のタイトルをスラッシュで区切ると階層構造になります
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://au-project.mediba.local/projects/*/documents
@@ -72,7 +72,7 @@ function objectSort(object) {
 
     var dictionary = {};
     var $title = $('#content').find('h4');
-    
+
     var aryEach = function(ary, dic) {
         var key = ary.shift();
         if (ary.length <= 1) {
@@ -166,4 +166,21 @@ function objectSort(object) {
 
     $(html).insertAfter($('#content > h3'));
     $('.ex-parent').click();
+
+    var $openAll = $('<a class="icon icon-zoom-in">すべて展開</a>');
+    $openAll.on('click', function() {
+        $('.ex-parent').parent().siblings().toggle('fast');
+        $('.ex-parent').toggleClass('collapsed');
+        if ($('.ex-parent').hasClass('collapsed')) {
+            $openAll.text('すべて展開');
+            $openAll.removeClass('icon-zoom-out');
+            $openAll.addClass('icon-zoom-in');
+        } else {
+            $openAll.text('すべて畳む');
+            $openAll.removeClass('icon-zoom-in');
+            $openAll.addClass('icon-zoom-out');
+        }
+    });
+    $('.contextual').prepend($openAll);
+
 })();
