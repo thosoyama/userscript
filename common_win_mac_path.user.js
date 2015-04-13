@@ -1,15 +1,18 @@
 // ==UserScript==
 // @name         Win⇔Macファイルパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      1.8
+// @version      1.9
 // @description  TalknoteかRedmine上でファイルサーバのパスを選択するとWin,Mac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
+// @match        https://*.google.com/*
+// @match        https://github.com/*
 // @match        http://au-project.mediba.local/*
+// @require      https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js
 // @grant        none
 // ==/UserScript==
 
-(function() {
+(function($) {
     var style = document.createElement('style');
     style.textContent = (function () {/*
         .ex-win2mac {
@@ -73,6 +76,8 @@
         }, 0);
     }).on('click', function() {
         $dialog.hide();
+        location.href = this.href;
+        return false;
     });
 
     $(document).on('mouseup', function(e) {
@@ -87,10 +92,10 @@
             return;
         }
 
-        var matches = selectedText.match(/^(?:([a-zA-Z]):|\\\\(FILE0\d)\\fileshare)((?:(?:\\[^\\]+)+)\\?)$/i);
+        var matches = selectedText.match(/^(?:([a-zA-Z]):|\\\\(?:mediba-)?(file0\d)\\fileshare)((?:(?:\\[^\\]+)+)\\?)$/i);
         var win2mac = true;
         if (!matches) {
-            matches = selectedText.match(/^smb:\/\/(file0\d)(?:\.mediba\.local)?\/fileshare((?:(?:\/[^\/]+)+)\/?)$/i);
+            matches = selectedText.match(/^smb:\/\/(?:mediba-)(file0\d)(?:\.mediba\.local)?\/fileshare((?:(?:\/[^\/]+)+)\/?)$/i);
             if (!matches) {
                 return;
             }
@@ -117,4 +122,4 @@
         $dialog.show();
         $1stLink.focus();
     });
-})();
+})(jQuery.noConflict(true));
