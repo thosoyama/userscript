@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        THashTag
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.3
+// @version     0.4
 // @description Talknoteの左メニューに検索ワードのリンクを追加します
 // @include     https://company.talknote.com/mediba.jp/*
 // @exclude
@@ -10,6 +10,9 @@
 // ==/UserScript==
 
 (function() {
+    if ($('.thashtag-links').size()) {
+        return;
+    }
     var $style = $('<style/>').text((function () {/*
         .thashtag-link {
             position: relative;
