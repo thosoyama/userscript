@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name        Redmineのニュースでチケットのプレビュー表示
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.2
+// @version     0.3
 // @description Redmineのニュースでチケットのプレビュー表示します。
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://au-project.mediba.local/news/*
+// @require     https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js
 // @grant       none
 // ==/UserScript==
 
-(function() {
+(function($) {
     $('head').append($('<style/>').text((function () {/*
         .ex-issue_container {
             display:none;
@@ -72,4 +73,4 @@
             return false;
         });
     });
-})();
+})(jQuery.noConflict(true));
