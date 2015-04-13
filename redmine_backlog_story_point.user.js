@@ -1,16 +1,16 @@
 // ==UserScript==
 // @name        Redmine:マスターバックログのストーリーポイント集計
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.9
+// @version     0.10
 // @description バックログに制作のポイント・開発のポイント・その他のポイント・終了したポイントを追加します
 //              小室さんのブックマークレットを勝手に改変
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://au-project.mediba.local/rb/master_backlog/dolphin
-// @require     http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js
+// @require     https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js
 // @grant       none
 // ==/UserScript==
 
-(function() {
+(function($) {
     var distributor = {
         selector: {
             backlog: '#backlogs_container div.backlog',
@@ -220,4 +220,4 @@
     } catch (msg) {
        msg && console.error(msg);
     }
-})();
+})(jQuery.noConflict(true));
