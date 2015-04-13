@@ -1,15 +1,16 @@
 // ==UserScript==
 // @name        THashTag
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.4
+// @version     0.5
 // @description Talknoteの左メニューに検索ワードのリンクを追加します
 // @include     https://company.talknote.com/mediba.jp/*
 // @exclude
+// @require     https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js
 // @require     https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js
 // @grant       none
 // ==/UserScript==
 
-(function() {
+(function($) {
     if ($('.thashtag-links').size()) {
         return;
     }
@@ -128,4 +129,4 @@
         .append($style)
         .append($script)
         .append($('<script src="https://alpha.mdev.auone.jp/jenkins/userContent/thashtag.jsonp"/>'));
-})();
+})(jQuery.noConflict(true));
