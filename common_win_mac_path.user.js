@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Win⇔Macファイルパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      1.9
+// @version      1.10
 // @description  TalknoteかRedmine上でファイルサーバのパスを選択するとWin,Mac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -95,7 +95,7 @@
         var matches = selectedText.match(/^(?:([a-zA-Z]):|\\\\(?:mediba-)?(file0\d)\\fileshare)((?:(?:\\[^\\]+)+)\\?)$/i);
         var win2mac = true;
         if (!matches) {
-            matches = selectedText.match(/^smb:\/\/(?:mediba-)(file0\d)(?:\.mediba\.local)?\/fileshare((?:(?:\/[^\/]+)+)\/?)$/i);
+            matches = selectedText.match(/^smb:\/\/(?:mediba-)?(file0\d)(?:\.mediba\.local)?\/fileshare((?:(?:\/[^\/]+)+)\/?)$/i);
             if (!matches) {
                 return;
             }
