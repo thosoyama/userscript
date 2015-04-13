@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name        Redmine文書のタイトルをツリー構造化
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.4
+// @version     0.5
 // @description 文書のタイトルをスラッシュで区切ると階層構造になります
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://au-project.mediba.local/projects/*/documents
+// @require     https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js
 // @grant       none
 // ==/UserScript==
 
@@ -23,7 +24,7 @@ function objectSort(object) {
     return sorted;
 }
 
-(function() {
+(function($) {
     var style = document.createElement('style');
     style.textContent = (function () {/*
         #content .author {
@@ -101,7 +102,7 @@ function objectSort(object) {
     });
 
     dictionary = objectSort(dictionary);
-    
+
     var html = '';
     var hashEach = function(key, dic) {
         if (dic[key].data) {
@@ -200,4 +201,4 @@ function objectSort(object) {
     });
     $('.contextual').prepend($openAll);
 
-})();
+})(jQuery.noConflict(true));
