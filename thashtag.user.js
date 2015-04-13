@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name        THashTag
+// @name        Talknote検索ブックマーク
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.5
+// @version     0.6
 // @description Talknoteの左メニューに検索ワードのリンクを追加します
 // @include     https://company.talknote.com/mediba.jp/*
 // @exclude
