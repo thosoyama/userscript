@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Talknote検索ブックマーク
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.6
+// @version     0.7
 // @description Talknoteの左メニューに検索ワードのリンクを追加します
 // @include     https://company.talknote.com/mediba.jp/*
 // @exclude
@@ -84,7 +84,7 @@
                     });
                     $link.append($deleteButton);
                 }
-                return $link;
+                return $('<li/>').append($link);
             };
 
             $fragment = $(document.createDocumentFragment());
@@ -96,8 +96,8 @@
                 $fragment.append(createNewLink(i));
             }
 
-            $('.left_menu').append($('<li><a>検索ブックマーク</a><ul><li class="thashtag-links"></li></ul></li>'));
-            $('.thashtag-links').append($fragment);
+            $('.left_menu').append($('<li><a>検索ブックマーク</a><ul class="left_bookmark_list"></ul></li>'));
+            $('.left_bookmark_list').append($fragment);
 
             $('.left_menu > li:last-child').append('<ul><li class="thashtag-form"><span class="thashtag-form__span"><input type="text" class="thashtag-form__text"><button class="thashtag-form__add">追加</button></span></li></ul>');
             $('.thashtag-form__text').keypress(function(e) {
@@ -117,7 +117,7 @@
                 }
                 setting[value] = 1;
                 $.cookie('thashtag', setting, {path: '/', expires: 365});
-                $('.thashtag-links').append(createNewLink(value));
+                $('.left_bookmark_list').append(createNewLink(value));
                 $('.thashtag-form__text').val('');
                 return false;
             });
