@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Redmine文書のタイトルをツリー構造化
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.5
+// @version     0.6
 // @description 文書のタイトルをスラッシュで区切ると階層構造になります
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://au-project.mediba.local/projects/*/documents
@@ -75,7 +75,13 @@ function objectSort(object) {
     $('#content').find('.wiki').remove();
 
     var dictionary = {};
-    var $title = $('#content').find('h4');
+    var $title = $('#content').find('h4').sort(function(a, b){
+        var astr = $('a', a).text();
+        var bstr = $('a', b).text();
+        if(astr > bstr)  return 1;
+        if(astr < bstr)  return -1;
+        return 0;
+    });
 
     var aryEach = function(ary, dic) {
         var key = ary.shift();
