@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Redmineのニュースでチケットのプレビュー表示
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.3
+// @version     0.4
 // @description Redmineのニュースでチケットのプレビュー表示します。
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://au-project.mediba.local/news/*
@@ -47,10 +47,12 @@
 
     $('a.issue, a.external[href^="http://au-project.mediba.local/issues/"]').each(function() {
         $issue = $(this);
-        $issue.on('mouseover', function(e) {
-            if ($container.is(':visible')) {
-                return;
-            }
+        $issue.on('mouseover', function() {
+            $(this).css('text-decoration', 'underline overline');
+        }).on('mouseout', function(e) {
+            $(this).css('text-decoration', '');
+        }).on('click', function(e) {
+            $container.hide();
             $container.html('<img src="http://au-project.mediba.local/images/loading.gif">');
             $container.show('fast');
             $.ajax({
