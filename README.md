@@ -16,7 +16,8 @@
 ## ユーザースクリプト
 
 * [casperjs.utils.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/casperjs.utils.user.js)
- * ブラウザからcasperjsの__utils__による確認ができるようになります。
+ * 有効にしておくと、ブラウザのコンソールからcasperjsの__utils__のメソッドによる確認ができるようになります。
+ * 例： `__utils__.exists('.recommend__box div'); // true or falseが返ってくる`
 
 
 * [redmine_documents_tree.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/redmine_documents_tree.user.js)
