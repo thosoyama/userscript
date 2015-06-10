@@ -15,6 +15,10 @@
 
 ## ユーザースクリプト
 
+* [casperjs.utils.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/casperjs.utils.user.js)
+ * ブラウザからcasperjsの__utils__による確認ができるようになります。
+
+
 * [redmine_documents_tree.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/redmine_documents_tree.user.js)
  * Redmineの文書ページのリンクを階層構造を持たせて表示します。
 
