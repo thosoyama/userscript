@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name        CasperJS Utilsを有効にする
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.1
+// @version     0.2
 // @description CasperJSの__utils__メソッドをconsoleから実行して確認できるようにします
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://*/*
 // @match       https://*/*
 // @grant       none
+// @noframes
 // ==/UserScript==
 
 (function(){
