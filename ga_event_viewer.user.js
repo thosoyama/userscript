@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name        GAに送信するイベントパラメータをコンソールに出力
+// @name        catchTrEventの引数をコンソール出力
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.1
+// @version     0.2
 // @description GAのイベントパラメータをコンソールにデバッグ出力します
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://*/*
@@ -13,20 +13,22 @@
 
 (function($) {
     
-    $('head').append($('<script/>').text((function () {/*
+    $('body').append($('<script/>').text((function () {/*
     
-    var timeerId = setInterval(function() {
-        if (typeof window.ga !== 'undefined') {
-            console.debug('GAのイベントパラメータをコンソールにデバッグ出力します');
-            window.ga_orig = window.ga;
-            window.ga = function() {
+    console.debug('catchTrEventの引数をコンソール出力');
+
+    // catchTrEvent
+    var cte = setInterval(function() {
+        if (typeof catchTrEvent !== 'undefined') {
+            var catchTrEventOrig = catchTrEvent;
+            catchTrEvent = function() {
                 console.debug(arguments);
-                ga_orig();
+                catchTrEventOrig.apply(window, arguments);
             };
-            clearInterval(timeerId);
+            clearInterval(cte);
         }
-    }, 500);
-    
-    */}).toString().replace(/(\n)/g, '').split('*')[1]));
+    }, 300);
+
+    */}).toString().replace(/(\n)/g, '\n').split('*')[1]));
     
 })(jQuery.noConflict(true));
