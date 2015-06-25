@@ -15,6 +15,12 @@
 
 ## ユーザースクリプト
 
+* [ga_event_viewer.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/ga_event_viewer.user.js)
+ * ローカル環境以外でもコンソールにcatchTrEventの引数が見えるようになるやつ。
+ * 普段は無効にしておこう。
+
+
+
 * [casperjs.utils.user.js](https://github.com/hosoyama-mediba/userscript/raw/master/casperjs.utils.user.js)
  * 有効にしておくと、ブラウザのコンソールからcasperjsの__utils__のメソッドによる確認ができるようになります。
  * 例： `__utils__.exists('.recommend__box div'); // true or falseが返ってくる`
