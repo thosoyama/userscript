@@ -8,6 +8,7 @@
 // @match        https://*.google.com/*
 // @match        https://github.com/*
 // @match        http://au-project.mediba.local/*
+// @match        https://creative-m.backlog.jp/*
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js
 // @grant        none
 // ==/UserScript==
