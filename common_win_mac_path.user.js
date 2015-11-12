@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Win⇔Macファイルパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      1.12
+// @version      1.13
 // @description  TalknoteかRedmine上でファイルサーバのパスを選択するとWin,Mac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -114,11 +114,11 @@
             file03 : 'W'
         };
         var convertedText = win2mac
-            ? 'smb://' + win2macVolumeMap[volume] + '/fileshare' + matches[3].replace(/\\/g, '/').replace(/ /g, '%20')
+            ? 'smb://' + win2macVolumeMap[volume] + '/fileshare' + matches[3].replace(/\\/g, '/')
             : mac2winVolumeMap[volume] + ':'+ matches[2].replace(/\//g, '\\');
 
-        var $1stLink = $('.ex-win2mac__link:first-child').attr({href: selectedText}).text(selectedText);
-        var $2ndLink = $('.ex-win2mac__link:last-child').attr({href: convertedText}).text(convertedText);
+        var $1stLink = $('.ex-win2mac__link:first-child').attr({href: selectedText.replace(/ /g, '%20')}).text(selectedText);
+        var $2ndLink = $('.ex-win2mac__link:last-child').attr({href: convertedText.replace(/ /g, '%20')}).text(convertedText);
 
         $dialog.show();
         $1stLink.focus();
