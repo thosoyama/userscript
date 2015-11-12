@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Win⇔Macファイルパス変換
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      1.13
+// @version      1.14
 // @description  TalknoteかRedmine上でファイルサーバのパスを選択するとWin,Mac用に変換したパスを表示します
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -81,6 +81,15 @@
         return false;
     });
 
+    var filenameFilter = function(filepath) {
+        var isMac = filepath.indexOf('smb:') === 0;
+        var names = [];
+        filepath.split(/[\/\\]/).forEach(function(val, idx, ary) {
+            names[idx] = val.replace(/ /g, '%20');
+        })
+        return names.join(isMac ? '/' : '\\');
+    };
+
     $(document).on('mouseup', function(e) {
         if ($(e.target).hasClass('ex-win2mac') || $(e.target).parent().hasClass('ex-win2mac')) {
             return;
@@ -117,8 +126,8 @@
             ? 'smb://' + win2macVolumeMap[volume] + '/fileshare' + matches[3].replace(/\\/g, '/')
             : mac2winVolumeMap[volume] + ':'+ matches[2].replace(/\//g, '\\');
 
-        var $1stLink = $('.ex-win2mac__link:first-child').attr({href: selectedText.replace(/ /g, '%20')}).text(selectedText);
-        var $2ndLink = $('.ex-win2mac__link:last-child').attr({href: convertedText.replace(/ /g, '%20')}).text(convertedText);
+        var $1stLink = $('.ex-win2mac__link:first-child').attr({href: filenameFilter(selectedText)}).text(selectedText);
+        var $2ndLink = $('.ex-win2mac__link:last-child').attr({href: filenameFilter(convertedText)}).text(convertedText);
 
         $dialog.show();
         $1stLink.focus();
