@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Taigaの画像を表示する( ˙-˙ )
+// @name         Taigaの投稿画像を表示する( ˙-˙ )
 // @namespace    https://github.com/hosoyama-mediba/userscript
 // @version      0.5
 // @description  なおるまで
