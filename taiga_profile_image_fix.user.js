@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Taigaのプロフィール画像を表示する( ˙-˙ )
+// @name         Taigaの画像を表示する( ˙-˙ )
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.4
+// @version      0.5
 // @description  なおるまで
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        http://taiga.mediba.jp/*
