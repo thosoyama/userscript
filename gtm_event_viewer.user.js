@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        GTMイベントログ出力
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.1
+// @version     0.2
 // @description GTMとGAのイベントパラメータをコンソールにデバッグ出力します
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://*/*
@@ -25,7 +25,7 @@
                 };
                 clearInterval(ga_timer);
             }
-        }, 300);
+        }, 500);
 
         var gtm_timer = setInterval(function() {
             if (typeof window.dataLayer !== 'undefined') {
@@ -36,7 +36,7 @@
                 };
                 clearInterval(gtm_timer);
             }
-        }, 300);
+        }, 500);
 
     `));
 })(jQuery.noConflict(true));
