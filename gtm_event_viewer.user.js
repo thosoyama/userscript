@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name        GTMイベントログ出力
+// @name        スクロールイベントデバッグ
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.2
-// @description GTMとGAのイベントパラメータをコンソールにデバッグ出力します
+// @version     0.3
+// @description スクロールイベントの発火時にログ出力
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://*/*
 // @match       https://*/*
@@ -14,24 +14,15 @@
 (function($) {
     $('body').append($('<script/>').text(`
 
-        console.debug('GTMイベントの引数をデバッグ出力します');
-
-        var ga_timer = setInterval(function() {
-            if (typeof window.ga !== 'undefined') {
-                var ga_original = window.ga;
-                window.ga = function() {
-                    console.debug('ga:', arguments);
-                    ga_original.apply(window, arguments);
-                };
-                clearInterval(ga_timer);
-            }
-        }, 500);
+        console.debug('スクロールイベントデバッグON');
 
         var gtm_timer = setInterval(function() {
             if (typeof window.dataLayer !== 'undefined') {
                 var dataLayer_original = window.dataLayer.push;
-                window.dataLayer.push = function() {
-                    console.debug('dataLayer:', arguments[0]);
+                window.dataLayer.push = function(o) {
+                    if (o.event === 'ScrollTiming') {
+                        console.log(o.eventLabel + ': ' + o.eventTiming + 'ms');
+                    }
                     dataLayer_original.apply(window, arguments);
                 };
                 clearInterval(gtm_timer);
