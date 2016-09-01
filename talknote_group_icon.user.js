@@ -1,49 +1,47 @@
 // ==UserScript==
 // @name         TalknoteGroupIcon
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.2
+// @version      0.3
 // @description  Talknoteのサイドメニューにグループアイコンを表示する
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
+// @require      https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js
 // @grant        none
 // @noframes
 // ==/UserScript==
 
-(function() {
+(function($) {
+    // CSS
+    var styels = '.left_link_unread { margin-left: 5px !important; }';
+    $('<style/>').text(styels).appendTo($('head'));
 
-    var style = document.createElement('style');
-    style.innerHTML = '.left_link_unread { margin-left: 5px !important; }';
-    document.querySelector('head').appendChild(style);
-
+    // APIからグループの情報を取得してアイコンを埋める
     function addLeftMenuGroupIcon() {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState !== 4 && xhr.status !== 200) {
-                return;
-            }
-            var resp = JSON.parse(xhr.responseText);
-            resp.data.groups.forEach(function(item) {
-                document.querySelectorAll('#left_group_list > li').forEach(function(groupElement) {
-                    if (groupElement.id.match(/^g_left_(\d+)$/)) {
-                        if (item.group_id === Number(RegExp.$1)) {
-                            var el = groupElement.querySelector('#g_left_link_' + item.group_id + ' .left_link_txt');
-                            var icon = document.createElement('img');
-                            icon.src = item.g_file_name_20;
-                            icon.style.width = '20px';
-                            icon.style.height = '20px';
-                            icon.style.marginTop = '-15px';
-                            icon.style.marginRight = '2px';
-                            el.parentNode.insertBefore(icon, el);
-                        }
+        $.ajax({
+            url: 'https://company.talknote.com/mediba.jp/ajax/group/list'
+        }).done(function(json) {
+            $.each(json.data.groups, function(i, item) {
+                $('#left_group_list > li').each(function(j, groupElement) {
+                    if (!groupElement.id.match(/^g_left_(\d+)$/)) {
+                        return;
                     }
+                    if (item.group_id !== Number(RegExp.$1)) {
+                        return;
+                    }
+                    var $el = $(groupElement).find('#g_left_link_' + item.group_id + ' .left_link_txt');
+                    var $icon = $('<img>').attr('src', item.g_file_name_20).css({
+                        width: '20px',
+                        height: '20px',
+                        'margin-top': '-15px',
+                        'margin-right': '2px'
+                    });
+                    $el.parent().prepend($icon);
                 });
             });
-        };
-        xhr.open( 'GET', 'https://company.talknote.com/mediba.jp/ajax/group/list', false );
-        xhr.send(null);
-        xhr.abort();
+        });
     }
 
+    // DOMの挿入を監視
     var observer = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
@@ -54,5 +52,8 @@
             }
         });
     });
-    observer.observe(document.getElementById('left_group_list'), { childList: true });
-})();
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+})(jQuery.noConflict(true));
