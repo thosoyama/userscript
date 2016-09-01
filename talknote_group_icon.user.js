@@ -40,7 +40,7 @@
                         return;
                     }
                     var $el = $(groupElement).find('#g_left_link_' + item.group_id + ' .left_link_txt');
-                    var $icon = $('<img>').attr('src', item.g_file_name_20).addClass('ex-tgi-left-icon');
+                    var $icon = $('<img>').attr('src', item.g_file_name_40).addClass('ex-tgi-left-icon');
                     $el.parent().prepend($icon);
                     return false;
                 });
