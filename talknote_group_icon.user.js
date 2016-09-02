@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TalknoteGroupIcon
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.4
+// @version      0.5
 // @description  Talknoteのサイドメニューにグループアイコンを表示する
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -39,9 +39,15 @@
                     if (item.group_id !== Number(RegExp.$1)) {
                         return;
                     }
+
                     var $el = $(groupElement).find('#g_left_link_' + item.group_id + ' .left_link_txt');
                     var $icon = $('<img>').attr('src', item.g_file_name_40).addClass('ex-tgi-left-icon');
+                    if ($el.parent().find('.ex-tgi-left-icon').size()) {
+                        return;
+                    }
+
                     $el.parent().prepend($icon);
+
                     return false;
                 });
             });
