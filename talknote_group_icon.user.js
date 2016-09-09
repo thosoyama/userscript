@@ -1,21 +1,25 @@
 // ==UserScript==
-// @name         TalknoteGroupIcon
+// @name         TalknoteIcon
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.6
-// @description  Talknoteのサイドメニューにグループアイコンを表示する
+// @version      0.7
+// @description  Talknoteのサイドメニューにアイコンを表示する
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js
 // @grant        none
+// @run-at       document-start
 // @noframes
 // ==/UserScript==
 
 (function($) {
     // CSS
     var styels = `
+        #left_nav {
+            width: 257px !important;
+        }
         .left_link_unread {
             position: absolute;
-            right: 0;
+            right: 10px;
         }
         .left_link > a {
             position: relative;
@@ -119,7 +123,7 @@
             }
         });
     });
-    observer.observe(document.body, {
+    observer.observe(document, {
         childList: true,
         subtree: true
     });
