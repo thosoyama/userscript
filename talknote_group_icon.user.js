@@ -119,10 +119,10 @@
             for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
                 var node = mutation.addedNodes[i];
                 if (node.id && node.id === 'left_menu_timeline') {
-                    setTimeout(addLeftMenuGroupIcon, 0);
+                    setTimeout(addLeftMenuGroupIcon, 100);
                 }
                 if (node.id && node.id === $('#left_dm_list').children().last().attr('id')) {
-                    setTimeout(addLeftMenuDMIcon, 0);
+                    setTimeout(addLeftMenuDMIcon, 100);
                 }
             }
         });
