@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TalknoteIcon
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.9
+// @version      0.10
 // @description  Talknoteのサイドメニューにアイコンを表示する
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -50,7 +50,7 @@
             }
             if (new RegExp('/ajax/dm/threads').test(this.responseURL)) {
                 var _msg = JSON.parse(this.response).data.msg;
-                if (!_msg.length) {
+                if (_msg.length <= 1) {
                     return;
                 }
                 msg = _msg;
@@ -132,8 +132,12 @@
 
         if (node.className === 'active') {
             setTimeout(function() {
-                $('#dm_left_' + id).find('.left_link a').prepend($icon);
-            }, 1);
+                var $target = $('#dm_left_' + id).find('.left_link a');
+                if ($target.find('.ex-tgi-left-icon').size()) {
+                    return;
+                }
+                $target.prepend($icon);
+            }, 300);
         } else {
             $target.prepend($icon);
         }
