@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TalknoteIcon
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.8
+// @version      0.9
 // @description  Talknoteのサイドメニューにアイコンを表示する
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -113,16 +113,48 @@
         });
     }
 
+    // メッセージリストのアイテム更新時にアイコンを埋める
+    function addMessageIcon(id, node) {
+        if (!msg.length) {
+            return;
+        }
+
+        var item = $.grep(msg, function(i) {
+            return i.id === Number(id);
+        })[0];
+
+        if (!item) {
+            return;
+        }
+
+        var $icon = $('<img>').attr('src', item.icon_url_m).addClass('ex-tgi-left-icon');
+        var $target = $(node).find('.left_link a');
+
+        if (node.className === 'active') {
+            setTimeout(function() {
+                $('#dm_left_' + id).find('.left_link a').prepend($icon);
+            }, 1);
+        } else {
+            $target.prepend($icon);
+        }
+    }
+
     // DOMの挿入を監視
     var observer = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
                 var node = mutation.addedNodes[i];
-                if (node.id && node.id === 'left_menu_timeline') {
-                    setTimeout(addLeftMenuGroupIcon, 100);
+                if (!node.id) {
+                    return;
                 }
-                if (node.id && node.id === $('#left_dm_list').children().last().attr('id')) {
-                    setTimeout(addLeftMenuDMIcon, 100);
+                if (node.id === 'left_menu_timeline') {
+                    setTimeout(function() {
+                        addLeftMenuGroupIcon();
+                        addLeftMenuDMIcon();
+                    }, 300);
+                }
+                if (node.id.match(/^dm_left_(\d+)$/)) {
+                    addMessageIcon(RegExp.$1, node);
                 }
             }
         });
