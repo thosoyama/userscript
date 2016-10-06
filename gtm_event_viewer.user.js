@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        スクロールイベントデバッグ
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.3
+// @version     0.4
 // @description スクロールイベントの発火時にログ出力
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://*/*
@@ -13,21 +13,18 @@
 
 (function($) {
     $('body').append($('<script/>').text(`
-
-        console.debug('スクロールイベントデバッグON');
-
         var gtm_timer = setInterval(function() {
             if (typeof window.dataLayer !== 'undefined') {
                 var dataLayer_original = window.dataLayer.push;
                 window.dataLayer.push = function(o) {
-                    if (o.event === 'ScrollTiming') {
-                        console.log(o.eventLabel + ': ' + o.eventTiming + 'ms');
+                    if (o.event === 'ScrollDistance') {
+                        console.log('scroll:', [o.eventCategory, o.eventAction, o.eventLabel]);
                     }
                     dataLayer_original.apply(window, arguments);
                 };
                 clearInterval(gtm_timer);
+                console.debug('スクロールイベントデバッグON');
             }
         }, 500);
-
     `));
 })(jQuery.noConflict(true));
