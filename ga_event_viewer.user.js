@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        GAイベントの引数をコンソール出力
 // @namespace   https://github.com/hosoyama-mediba/userscript
-// @version     0.4
+// @version     0.5
 // @description GAのイベントパラメータをコンソールにデバッグ出力します
 // @author      Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match       http://*/*
@@ -12,17 +12,23 @@
 // ==/UserScript==
 
 (function($) {
-    $('body').append($('<script/>').text(`
-        console.debug('GAイベントの引数をデバッグ出力します');
-        var timer = setInterval(function() {
+    var script = $('<script/>').text(`
+        var gaTimer;
+        var gaReadyCallback = function() {
+            console.log('GAイベントの引数をデバッグ出力します');
+            var gaOrig = window.ga;
+            window.ga = function(...args) {
+                console.log('ga:', ...args);
+                gaOrig.apply(window, arguments);
+            };
+            clearInterval(gaTimer);
+        };
+
+        gaTimer = setInterval(function() {
             if (typeof window.ga !== 'undefined') {
-                var gaOrig = window.ga;
-                window.ga = function() {
-                    console.debug('ga:', arguments);
-                    gaOrig.apply(window, arguments);
-                };
-                clearInterval(timer);
+                window.ga(gaReadyCallback);
             }
         }, 500);
-    `));
+    `);
+    $('body').append(script);
 })(jQuery.noConflict(true));
