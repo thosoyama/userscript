@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         TalknoteIcon
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.10
+// @version      0.11
 // @description  Talknoteのサイドメニューにアイコンを表示する
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
+// @match        https://*.company.talknote.com/mediba.jp/*
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js
 // @grant        none
 // @run-at       document-start
