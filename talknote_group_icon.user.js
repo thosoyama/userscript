@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TalknoteIcon
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.20
+// @version      0.21
 // @description  Talknoteのサイドメニューにアイコンを表示する
 // @author       Terunobu Hosoyama <hosoyama@mediba.jp>
 // @match        https://company.talknote.com/mediba.jp/*
@@ -76,7 +76,6 @@ $(() => {
 
     // APIからメッセージの情報を取得してアイコンを埋める
     function addLeftMenuDMIcon() {
-        console.log('addLeftMenuDMIcon');
         $.each(msg, (i, item) => {
             $('#left_dm_list > li').each((j, dmElement) => {
                 var dmId = item.dm_id;
@@ -103,7 +102,6 @@ $(() => {
 
     // メッセージリストのアイテム更新時にアイコンを埋める
     function addMessageIcon(id, node) {
-        console.log('addMessageIcon',id, node);
         if (!msg.length) {
             return;
         }
