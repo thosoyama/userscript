@@ -13,6 +13,7 @@
 document.styleSheets[0].insertRule('.news__item--ad a:first-child { position: relative; }', 0);
 document.styleSheets[0].insertRule('.news__item--ad { background: none !important; }', 0);
 document.styleSheets[0].insertRule('.adcon-toprich_loading { position:relative; background: none !important; }', 0);
+document.styleSheets[0].insertRule('.adcon-toprich_loading iframe { position:relative; }', 0);
 
 var style = document.createElement('style');
 style.textContent = `
@@ -67,8 +68,7 @@ spiner.innerHTML = `
 
 window.addEventListener('DOMContentLoaded', () => {
     const banner = document.querySelector('#adcon-toprich');
-    banner.firstChild.style.position = 'relative';
-    banner.insertBefore(spiner.cloneNode(true), topBanner.firstChild);
+    banner.insertBefore(spiner.cloneNode(true), banner.firstChild);
 });
 
 const observer = new MutationObserver((mutations) => {
