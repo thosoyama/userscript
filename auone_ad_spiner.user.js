@@ -12,6 +12,7 @@
 
 document.styleSheets[0].insertRule('.news__item--ad a:first-child { position: relative; }', 0);
 document.styleSheets[0].insertRule('.news__item--ad { background: none !important; }', 0);
+document.styleSheets[0].insertRule('.adcon-toprich_loading { position:relative; background: none !important; }', 0);
 
 var style = document.createElement('style');
 style.textContent = `
@@ -63,6 +64,12 @@ spiner.innerHTML = `
     <div class="spin__rect4"></div>
     <div class="spin__rect5"></div>
 `;
+
+window.addEventListener('DOMContentLoaded', () => {
+    const banner = document.querySelector('#adcon-toprich');
+    banner.firstChild.style.position = 'relative';
+    banner.insertBefore(spiner.cloneNode(true), topBanner.firstChild);
+});
 
 const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
