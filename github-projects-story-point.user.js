@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Github projects story points
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.2
+// @version      0.3
 // @description  ラベルでポイント管理
 // @author       hosoyama@mediba.jp
 // @match        https://github.com/*/*/projects/*
@@ -22,7 +22,7 @@ const calc = () => {
     const columns = Array.from(document.querySelectorAll('.js-project-column'));
 
     // 列毎のポイントを集計
-    const points = columns.map(column => Array.from(column.querySelectorAll('.js-card-filter-label'))
+    const points = columns.map(column => Array.from(column.querySelectorAll('.js-card-filter'))
         .filter(label => !label.closest('.d-none') && /^\d+$/.test(label.innerText.trim()))
         .map((label) => Number(label.innerText.trim()))
         .reduce((a, b) => a + b, 0));
