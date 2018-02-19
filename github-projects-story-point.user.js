@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Github projects story points
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.4
+// @version      0.5
 // @description  ラベルでポイント管理
 // @author       hosoyama@mediba.jp
 // @match        https://github.com/*/*/projects/*
@@ -39,7 +39,7 @@ const calc = () => {
             storyPoint.innerText = label;
         }
 
-        storyPoint.style.opacity = label === '0/0' ? '0' : '1';
+        storyPoint.style.display = label === '0/0' ? 'none' : '';
     });
 };
 
