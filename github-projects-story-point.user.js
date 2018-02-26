@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Github projects story points
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.6
+// @version      0.7
 // @description  ラベルでポイント管理
 // @author       hosoyama@mediba.jp
 // @match        https://github.com/*/*/projects/*
@@ -96,6 +96,11 @@ const init = () => {
     `;
     document.querySelector('head').appendChild(style);
     main();
+
+    // ☓ボタンおした時にフォーカスしないからサジェストが閉じなくなるのでなおす
+    document.querySelector('.js-card-filter-clear').addEventListener('click', () => {
+        document.querySelector('.js-card-filter-input').focus();
+    });
 };
 
 window.addEventListener('load', init, false);
