@@ -1,14 +1,19 @@
 // ==UserScript==
 // @name         Github projects story points
 // @namespace    https://github.com/hosoyama-mediba/userscript
-// @version      0.7
+// @version      0.8
 // @description  ラベルでポイント管理
 // @author       hosoyama@mediba.jp
 // @match        https://github.com/*/*/projects/*
+// @match        https://vcs.mediba.jp/mediba/*/projects/*
 // @grant        none
 // @run-at       document-start
 // @noframes
 // ==/UserScript==
+
+// GHE版はクラス名が違う
+const isGHE = location.hostname !== 'github.com';
+const labelSelector = isGHE ? '.issue-card-label' : '.js-card-filter';
 
 const debounce = (() => {
     let timer;
@@ -22,7 +27,7 @@ const calc = () => {
     const columns = Array.from(document.querySelectorAll('.js-project-column'));
 
     // 列毎のポイントを集計
-    const points = columns.map(column => Array.from(column.querySelectorAll('.js-card-filter'))
+    const points = columns.map(column => Array.from(column.querySelectorAll(labelSelector))
         .filter(label => !label.closest('.d-none') && !label.closest('.js-issue-note-reference') && /^:?[.\d]+$/.test(label.innerText.trim()))
         .map((label) => Number(label.innerText.replace(/^:/, '').trim()))
         .reduce((a, b) => a + b, 0));
