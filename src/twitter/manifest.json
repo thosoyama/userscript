@@ -1,0 +1,17 @@
+{
+  "name": "Twitter Reloader",
+  "namespace": "https://github.com/thosoyama",
+  "version": "1.0.0",
+  "description": "フォーカス時にリロード",
+  "author": "https://github.com/thosoyama",
+  "homepage": "https://github.com/thosoyama/userscript",
+  "homepageURL": "https://github.com/thosoyama/userscript",
+  "updateURL": "https://github.com/thosoyama/userscript/raw/master/dist/twitter.user.js",
+  "downloadURL": "https://github.com/thosoyama/userscript/raw/master/dist/twitter.user.js",
+  "supportURL": "https://github.com/thosoyama/userscript/issues",
+  "match": "https://twitter.com/*",
+  "icon": "https://www.google.com/s2/favicons?sz=64&domain=twitter.com",
+  "grant": "none",
+  "run-at": "document-idle",
+  "noframes": true
+}
