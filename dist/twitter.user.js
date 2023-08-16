@@ -68,6 +68,10 @@
             console.info('Skip: not ready.');
             return;
         }
+        if (e.type === 'visibilitychange' && document.visibilityState === 'hidden') {
+            console.info('Skip: visibility hidden.');
+            return;
+        }
         const scrollPosition = window.scrollY;
         if (scrollPosition > 0) {
             console.info('Skip: scrolled by user.');

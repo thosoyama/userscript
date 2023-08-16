@@ -76,6 +76,12 @@ async function handleEventAsync(e: Event | PointerEvent) {
     return
   }
 
+  // 非表示になった
+  if (e.type === 'visibilitychange' && document.visibilityState === 'hidden') {
+    console.info('Skip: visibility hidden.')
+    return
+  }
+
   // スクロール位置が一番上？
   const scrollPosition = window.scrollY
   if (scrollPosition > 0) {
