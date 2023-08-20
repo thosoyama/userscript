@@ -46,6 +46,7 @@
         $timeline.style.opacity = '0';
         document.querySelector(selector.mainHeader)?.parentElement?.parentElement?.click();
         await timeout(500);
+        scrollTo(0, 0);
         $timeline.style.transition = 'opacity 250ms ease-in';
         $timeline.style.opacity = '1';
     }
