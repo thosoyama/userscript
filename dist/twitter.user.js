@@ -27,16 +27,15 @@
     const selector = {
         ex: `#${exId}`,
         timeline: 'div[aria-label="ホームタイムライン"]',
-        column: 'div[aria-label="ホームタイムライン"] > div > div > div > div > div > div > div',
+        column: 'div[aria-label="ホームタイムライン"] > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1)',
         header: 'header',
-        headerInner: 'header > div',
-        headerMenuWrapper: 'header > div > div',
-        headerMenu: 'header > div > div > div',
-        linksInHeader: 'header >div > div > div > div',
+        headerInner: 'header > div:nth-of-type(1)',
+        headerMenuWrapper: 'header > div:nth-of-type(1) > div:nth-of-type(1)',
+        headerMenu: 'header > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1)',
+        linksInHeader: 'header > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1)',
         mainHeader: 'main h2',
         sidebar: 'div[data-testid="sidebarColumn"]',
-        hasNotSidebar: 'div:not(:has(div[data-testid="sidebarColumn"]))',
-        headerIsMin: 'header > div:is()',
+        hasNotSidebar: '#react-root:not(:has(div[data-testid="sidebarColumn"]))',
         metaThemeColor: 'meta[name="theme-color"]',
     };
     let isReady = false;
