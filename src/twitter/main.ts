@@ -190,6 +190,7 @@ function installStyles() {
     }
     ${selector.hasNotSidebar} ${selector.headerMenu} {
       background-color: #15202B !important;
+      opacity: 0.75;
     }
     ${selector.hasNotSidebar} ${selector.column} {
       padding-left: 95px !important;

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Twitter Reloader
 // @namespace    https://github.com/thosoyama
-// @version      1.2.0
+// @version      1.2.1
 // @description  フォーカス時にリロード
 // @author       https://github.com/thosoyama
 // @homepage     https://github.com/thosoyama/userscript
@@ -145,6 +145,7 @@
     }
     ${selector.hasNotSidebar} ${selector.headerMenu} {
       background-color: #15202B !important;
+      opacity: 0.75;
     }
     ${selector.hasNotSidebar} ${selector.column} {
       padding-left: 95px !important;
