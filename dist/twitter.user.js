@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Twitter Reloader
 // @namespace    https://github.com/thosoyama
-// @version      1.0.0
+// @version      1.1.0
 // @description  フォーカス時にリロード
 // @author       https://github.com/thosoyama
 // @homepage     https://github.com/thosoyama/userscript
@@ -25,11 +25,20 @@
 
     const selector = {
         timeline: 'div[aria-label="ホームタイムライン"]',
-        header: 'header >div > div > div',
+        column: 'div[aria-label="ホームタイムライン"] > div > div > div > div > div > div > div',
+        header: 'header',
+        headerInner: 'header > div',
+        headerMenuWrapper: 'header > div > div',
+        headerMenu: 'header > div > div > div',
         linksInHeader: 'header >div > div > div > div',
         mainHeader: 'main h2',
+        hasNotSidebar: 'div:not(:has(div[data-testid="sidebarColumn"]))',
+        headerIsMin: 'header > div:is()',
     };
     let isReady = false;
+    function $(selector, target = window.document) {
+        return target.querySelector(selector);
+    }
     function standby(ms = 20000) {
         isReady = false;
         return new Promise((resolve) => setTimeout(() => {
@@ -84,7 +93,7 @@
             return;
         }
         if (e.type === 'click' && e.target !== null) {
-            const $headerInner = document.querySelector(selector.header);
+            const $headerInner = document.querySelector(selector.headerMenu);
             if (!$headerInner?.contains(e.target)) {
                 console.info('Skip: not header clicked.');
                 return;
@@ -104,9 +113,59 @@
         console.group(e.type);
         handleEventAsync(e).finally(console.groupEnd);
     }
-    window.addEventListener('focus', handleEvent);
-    window.addEventListener('click', handleEvent);
-    window.addEventListener('visibilitychange', handleEvent);
+    function installStyles() {
+        const id = 'ex-tw-reloader';
+        if ($(`#${id}`) !== null) {
+            return;
+        }
+        const style = document.createElement('style');
+        style.id = id;
+        style.textContent = `
+    ${selector.hasNotSidebar} ${selector.header} {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+    }
+    ${selector.hasNotSidebar} ${selector.headerMenuWrapper} {
+      height: 53px !important;
+    }
+    ${selector.hasNotSidebar} ${selector.headerMenu} {
+      background-color: #15202B !important;
+    }
+    ${selector.hasNotSidebar} ${selector.column} {
+      padding-left: 95px !important;
+      @media (max-width: 599px) {
+        padding-left: 75px !important;
+      }
+    }
+  `;
+        document.head.append(style);
+    }
+    function handleHeaderMouseEvent(e) {
+        if (!(e.target instanceof Node)) {
+            return;
+        }
+        const $header = $(selector.header);
+        const $menuWrapper = $(selector.headerMenuWrapper);
+        if ($header.contains(e.target) && $menuWrapper.clientHeight === 53) {
+            console.log('over', $menuWrapper.clientHeight);
+            $menuWrapper.style.setProperty('height', '100%', 'important');
+            return;
+        }
+        if (!$header.contains(e.target) && $menuWrapper.clientHeight !== 53) {
+            console.log('out', $menuWrapper.clientHeight);
+            $(selector.headerMenuWrapper).style.setProperty('height', '53px', 'important');
+        }
+    }
+    function installScript() {
+        window.addEventListener('focus', handleEvent);
+        window.addEventListener('click', handleEvent);
+        window.addEventListener('visibilitychange', handleEvent);
+        window.addEventListener('mouseover', handleHeaderMouseEvent);
+        window.addEventListener('mouseout', handleHeaderMouseEvent);
+    }
+    installStyles();
+    installScript();
     standby();
 
 })();

@@ -2,12 +2,25 @@ import { timeout } from '../lib/timeout'
 
 const selector = {
   timeline: 'div[aria-label="ホームタイムライン"]',
-  header: 'header >div > div > div',
+  column: 'div[aria-label="ホームタイムライン"] > div > div > div > div > div > div > div',
+  header: 'header',
+  headerInner: 'header > div',
+  headerMenuWrapper: 'header > div > div',
+  headerMenu: 'header > div > div > div',
   linksInHeader: 'header >div > div > div > div',
   mainHeader: 'main h2',
+  hasNotSidebar: 'div:not(:has(div[data-testid="sidebarColumn"]))',
+  headerIsMin: 'header > div:is()',
 } as const
 
 let isReady = false
+
+/**
+ * querySelector
+ */
+function $(selector: string, target: Document | HTMLElement = window.document) {
+  return target.querySelector(selector) as HTMLElement
+}
 
 /**
  * 次回実行可能状態まで待機
@@ -100,7 +113,7 @@ async function handleEventAsync(e: Event | PointerEvent) {
   // クリックの場合
   if (e.type === 'click' && e.target !== null) {
     // ヘッダー内クリック？
-    const $headerInner = document.querySelector<HTMLDivElement>(selector.header)
+    const $headerInner = document.querySelector<HTMLDivElement>(selector.headerMenu)
     if (!$headerInner?.contains(e.target as Node)) {
       console.info('Skip: not header clicked.')
       return
@@ -132,8 +145,75 @@ function handleEvent(e: Event | PointerEvent) {
   handleEventAsync(e).finally(console.groupEnd)
 }
 
-window.addEventListener('focus', handleEvent)
-window.addEventListener('click', handleEvent)
-window.addEventListener('visibilitychange', handleEvent)
+/**
+ * install styles
+ */
+function installStyles() {
+  const id = 'ex-tw-reloader'
+  if ($(`#${id}`) !== null) {
+    return
+  }
+
+  const style = document.createElement('style')
+  style.id = id
+  style.textContent = `
+    ${selector.hasNotSidebar} ${selector.header} {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+    }
+    ${selector.hasNotSidebar} ${selector.headerMenuWrapper} {
+      height: 53px !important;
+    }
+    ${selector.hasNotSidebar} ${selector.headerMenu} {
+      background-color: #15202B !important;
+    }
+    ${selector.hasNotSidebar} ${selector.column} {
+      padding-left: 95px !important;
+      @media (max-width: 599px) {
+        padding-left: 75px !important;
+      }
+    }
+  `
+  document.head.append(style)
+}
+
+/**
+ * メニューの表示切替
+ */
+function handleHeaderMouseEvent(e: MouseEvent) {
+  if (!(e.target instanceof Node)) {
+    return
+  }
+
+  const $header = $(selector.header)
+  const $menuWrapper = $(selector.headerMenuWrapper)
+
+  if ($header.contains(e.target) && $menuWrapper.clientHeight === 53) {
+    console.log('over', $menuWrapper.clientHeight)
+    $menuWrapper.style.setProperty('height', '100%', 'important')
+    return
+  }
+
+  if (!$header.contains(e.target) && $menuWrapper.clientHeight !== 53) {
+    console.log('out', $menuWrapper.clientHeight)
+    $(selector.headerMenuWrapper).style.setProperty('height', '53px', 'important')
+  }
+}
+
+/**
+ * イベントリスナ登録
+ */
+function installScript() {
+  window.addEventListener('focus', handleEvent)
+  window.addEventListener('click', handleEvent)
+  window.addEventListener('visibilitychange', handleEvent)
+
+  window.addEventListener('mouseover', handleHeaderMouseEvent)
+  window.addEventListener('mouseout', handleHeaderMouseEvent)
+}
+
+installStyles()
+installScript()
 
 standby()
