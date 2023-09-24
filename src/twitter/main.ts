@@ -190,13 +190,13 @@ function handleHeaderMouseEvent(e: MouseEvent) {
   const $menuWrapper = $(selector.headerMenuWrapper)
 
   if ($header.contains(e.target) && $menuWrapper.clientHeight === 53) {
-    console.log('over', $menuWrapper.clientHeight)
     $menuWrapper.style.setProperty('height', '100%', 'important')
+    console.group(e.type)
+    handleEventAsync(e).finally(console.groupEnd)
     return
   }
 
   if (!$header.contains(e.target) && $menuWrapper.clientHeight !== 53) {
-    console.log('out', $menuWrapper.clientHeight)
     $(selector.headerMenuWrapper).style.setProperty('height', '53px', 'important')
   }
 }
