@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Twitter Reloader
 // @namespace    https://github.com/thosoyama
-// @version      1.3.2
+// @version      1.3.4
 // @description  フォーカス時にリロード
 // @author       https://github.com/thosoyama
 // @homepage     https://github.com/thosoyama/userscript
@@ -16,7 +16,7 @@
 // @noframes
 // ==/UserScript==
 
-(function () {
+(function (exports) {
     'use strict';
 
     function timeout(ms) {
@@ -37,6 +37,7 @@
         sidebar: 'div[data-testid="sidebarColumn"]',
         hasNotSidebar: 'div:not(:has(div[data-testid="sidebarColumn"]))',
         headerIsMin: 'header > div:is()',
+        metaThemeColor: 'meta[name="theme-color"]',
     };
     let isReady = false;
     let timer;
@@ -46,6 +47,26 @@
     function $$(key, target = window.document) {
         return Array.from(target.querySelectorAll(selector[key]));
     }
+    const hex2rgb = (hex, alpha) => {
+        if (hex.startsWith('#')) {
+            hex = hex.slice(1);
+        }
+        if (![3, 6].includes(hex.length) || /^[\dA-Fa-f]+}$/.test(hex)) {
+            throw new Error(`Invalid hex ${hex}`);
+        }
+        if (alpha !== undefined && (alpha > 1 || alpha < 0)) {
+            throw new Error(`Invalid alpha ${alpha}`);
+        }
+        if (hex.length === 3) {
+            hex = Array.from(hex)
+                .flatMap((s) => [s, s])
+                .join('');
+        }
+        const rgb = [hex.slice(0, 2), hex.slice(2, 4), hex.slice(4, 6)]
+            .map((str) => Number.parseInt(str, 16))
+            .join(',');
+        return alpha === undefined ? `rgb(${rgb})` : `rgba(${rgb},${alpha})`;
+    };
     function standby(ms = 20000) {
         isReady = false;
         return new Promise((resolve) => setTimeout(() => {
@@ -140,6 +161,7 @@
         if ($('ex') !== null) {
             return;
         }
+        const themeColor = $('metaThemeColor')?.content ?? '#15202B';
         const style = document.createElement('style');
         style.id = id;
         style.textContent = `
@@ -152,8 +174,7 @@
       height: 53px !important;
     }
     ${selector.hasNotSidebar} ${selector.headerMenu} {
-      background-color: #15202B !important;
-      opacity: 0.75;
+      background-color: ${hex2rgb(themeColor, 0.75)} !important;
     }
     ${selector.hasNotSidebar} ${selector.column} {
       padding-left: 95px !important;
@@ -175,4 +196,8 @@
     installEventHandler();
     standby();
 
-})();
+    exports.hex2rgb = hex2rgb;
+
+    return exports;
+
+})({});

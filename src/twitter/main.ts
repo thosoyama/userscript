@@ -15,6 +15,7 @@ const selector = {
   sidebar: 'div[data-testid="sidebarColumn"]',
   hasNotSidebar: 'div:not(:has(div[data-testid="sidebarColumn"]))',
   headerIsMin: 'header > div:is()',
+  metaThemeColor: 'meta[name="theme-color"]',
 } as const
 
 let isReady = false
@@ -23,15 +24,55 @@ let timer: NodeJS.Timeout
 /**
  * querySelector
  */
-function $(key: keyof typeof selector, target: Document | HTMLElement = window.document) {
-  return target.querySelector<HTMLElement>(selector[key])
+function $<T extends HTMLElement>(
+  key: keyof typeof selector,
+  target: Document | T = window.document
+) {
+  return target.querySelector<T>(selector[key])
 }
 
 /**
  * querySelectorAll
  */
-function $$(key: keyof typeof selector, target: Document | HTMLElement = window.document) {
-  return Array.from(target.querySelectorAll<HTMLElement>(selector[key]))
+function $$<T extends HTMLElement>(
+  key: keyof typeof selector,
+  target: Document | T = window.document
+) {
+  return Array.from(target.querySelectorAll<T>(selector[key]))
+}
+
+/**
+ * 16進カラーコードからrgbaに変換
+ */
+export const hex2rgb = (hex: string, alpha?: number) => {
+  // 先頭のハッシュ記号を削る
+  if (hex.startsWith('#')) {
+    hex = hex.slice(1)
+  }
+
+  // 正しいhexフォーマットか確認
+  if (![3, 6].includes(hex.length) || /^[\dA-Fa-f]+}$/.test(hex)) {
+    throw new Error(`Invalid hex ${hex}`)
+  }
+
+  // アルファ値の確認
+  if (alpha !== undefined && (alpha > 1 || alpha < 0)) {
+    throw new Error(`Invalid alpha ${alpha}`)
+  }
+
+  // 3桁指定の場合は6桁に直す
+  if (hex.length === 3) {
+    hex = Array.from(hex)
+      .flatMap((s) => [s, s])
+      .join('')
+  }
+
+  // rgbに変換
+  const rgb = [hex.slice(0, 2), hex.slice(2, 4), hex.slice(4, 6)]
+    .map((str: string) => Number.parseInt(str, 16))
+    .join(',')
+
+  return alpha === undefined ? `rgb(${rgb})` : `rgba(${rgb},${alpha})`
 }
 
 /**
@@ -187,6 +228,7 @@ function installStyles() {
     return
   }
 
+  const themeColor = $<HTMLMetaElement>('metaThemeColor')?.content ?? '#15202B'
   const style = document.createElement('style')
   style.id = id
   style.textContent = `
@@ -199,8 +241,7 @@ function installStyles() {
       height: 53px !important;
     }
     ${selector.hasNotSidebar} ${selector.headerMenu} {
-      background-color: #15202B !important;
-      opacity: 0.75;
+      background-color: ${hex2rgb(themeColor, 0.75)} !important;
     }
     ${selector.hasNotSidebar} ${selector.column} {
       padding-left: 95px !important;
