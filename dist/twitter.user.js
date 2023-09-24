@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Twitter Reloader
 // @namespace    https://github.com/thosoyama
-// @version      1.3.0
+// @version      1.3.1
 // @description  フォーカス時にリロード
 // @author       https://github.com/thosoyama
 // @homepage     https://github.com/thosoyama/userscript
@@ -127,8 +127,11 @@
         clearTimeout(timer);
         if (ev.type === 'mouseenter') {
             timer = setTimeout(() => {
-                console.group(ev.type);
-                reloadTimeline(ev).finally(console.groupEnd);
+                const scrollPosition = window.scrollY;
+                if (scrollPosition > 0) {
+                    console.group(ev.type);
+                    reloadTimeline(ev).finally(console.groupEnd);
+                }
             }, 1000);
         }
     }
