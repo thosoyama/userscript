@@ -170,7 +170,7 @@ function handleMouseEvent(e: MouseEvent) {
   if (ev.type === 'mouseenter') {
     timer = setTimeout(() => {
       const scrollPosition = window.scrollY
-      if (scrollPosition > 0) {
+      if (scrollPosition === 0) {
         console.group(ev.type)
         reloadTimeline(ev).finally(console.groupEnd)
       }
