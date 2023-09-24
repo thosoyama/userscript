@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Twitter Reloader
 // @namespace    https://github.com/thosoyama
-// @version      1.2.1
+// @version      1.3.0
 // @description  フォーカス時にリロード
 // @author       https://github.com/thosoyama
 // @homepage     https://github.com/thosoyama/userscript
@@ -39,6 +39,7 @@
         headerIsMin: 'header > div:is()',
     };
     let isReady = false;
+    let timer;
     function $(key, target = window.document) {
         return target.querySelector(selector[key]);
     }
@@ -120,11 +121,15 @@
         reloadTimeline(e).finally(console.groupEnd);
     }
     function handleMouseEvent(e) {
-        const height = e.type === 'mouseenter' || $('sidebar') ? '100%' : '53px';
+        const ev = e;
+        const height = ev.type === 'mouseenter' || $('sidebar') ? '100%' : '53px';
         $('headerMenuWrapper')?.style.setProperty('height', height, 'important');
-        if (e.type === 'mouseenter') {
-            console.group(e.type);
-            reloadTimeline(e).finally(console.groupEnd);
+        clearTimeout(timer);
+        if (ev.type === 'mouseenter') {
+            timer = setTimeout(() => {
+                console.group(ev.type);
+                reloadTimeline(ev).finally(console.groupEnd);
+            }, 1000);
         }
     }
     function installStyles() {

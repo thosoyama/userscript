@@ -18,6 +18,7 @@ const selector = {
 } as const
 
 let isReady = false
+let timer: NodeJS.Timeout
 
 /**
  * querySelector
@@ -160,11 +161,17 @@ function handleEvent(e: Event | PointerEvent) {
  * マウスイベントハンドラ
  */
 function handleMouseEvent(e: MouseEvent) {
-  const height = e.type === 'mouseenter' || $('sidebar') ? '100%' : '53px'
+  const ev = e
+  const height = ev.type === 'mouseenter' || $('sidebar') ? '100%' : '53px'
   $('headerMenuWrapper')?.style.setProperty('height', height, 'important')
-  if (e.type === 'mouseenter') {
-    console.group(e.type)
-    reloadTimeline(e).finally(console.groupEnd)
+
+  // 1秒マウスオーバーでリロード
+  clearTimeout(timer)
+  if (ev.type === 'mouseenter') {
+    timer = setTimeout(() => {
+      console.group(ev.type)
+      reloadTimeline(ev).finally(console.groupEnd)
+    }, 1000)
   }
 }
 
