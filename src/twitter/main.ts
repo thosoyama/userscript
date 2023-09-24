@@ -1,6 +1,9 @@
 import { timeout } from '../lib/timeout'
 
+const exId = 'ex-tw-reloader'
+
 const selector = {
+  ex: `#${exId}`,
   timeline: 'div[aria-label="ホームタイムライン"]',
   column: 'div[aria-label="ホームタイムライン"] > div > div > div > div > div > div > div',
   header: 'header',
@@ -9,6 +12,7 @@ const selector = {
   headerMenu: 'header > div > div > div',
   linksInHeader: 'header >div > div > div > div',
   mainHeader: 'main h2',
+  sidebar: 'div[data-testid="sidebarColumn"]',
   hasNotSidebar: 'div:not(:has(div[data-testid="sidebarColumn"]))',
   headerIsMin: 'header > div:is()',
 } as const
@@ -18,8 +22,15 @@ let isReady = false
 /**
  * querySelector
  */
-function $(selector: string, target: Document | HTMLElement = window.document) {
-  return target.querySelector(selector) as HTMLElement
+function $(key: keyof typeof selector, target: Document | HTMLElement = window.document) {
+  return target.querySelector<HTMLElement>(selector[key])
+}
+
+/**
+ * querySelectorAll
+ */
+function $$(key: keyof typeof selector, target: Document | HTMLElement = window.document) {
+  return Array.from(target.querySelectorAll<HTMLElement>(selector[key]))
 }
 
 /**
@@ -39,7 +50,7 @@ function standby(ms = 20000) {
  * ホームでリロード
  */
 async function reloadTimelineForHome() {
-  const $timeline = document.querySelector<HTMLDivElement>(selector.timeline)
+  const $timeline = $('timeline')
   if ($timeline === null) {
     return
   }
@@ -47,7 +58,7 @@ async function reloadTimelineForHome() {
   $timeline.style.transition = 'opacity 250ms ease-out'
   $timeline.style.opacity = '0'
 
-  document.querySelector(selector.mainHeader)?.parentElement?.parentElement?.click()
+  $('mainHeader')?.parentElement?.parentElement?.click()
 
   await timeout(500)
   scrollTo(0, 0)
@@ -59,8 +70,8 @@ async function reloadTimelineForHome() {
 /**
  * ホーム以外でリロード
  */
-async function reloadTimeline() {
-  const $timeline = document.querySelector<HTMLDivElement>(selector.timeline)
+async function reloadTimelineForOther() {
+  const $timeline = $('timeline')
   if ($timeline === null) {
     return
   }
@@ -81,9 +92,9 @@ async function reloadTimeline() {
 }
 
 /**
- * イベントハンドラ
+ * リロード
  */
-async function handleEventAsync(e: Event | PointerEvent) {
+async function reloadTimeline(e: Event | PointerEvent) {
   // 準備中？
   if (!isReady) {
     console.info('Skip: not ready.')
@@ -104,7 +115,7 @@ async function handleEventAsync(e: Event | PointerEvent) {
   }
 
   // タイムライン要素がある？
-  const $timeline = document.querySelector<HTMLElement>(selector.timeline)
+  const $timeline = $('timeline')
   if ($timeline === null) {
     console.info('Skip: no such timeline element.')
     return
@@ -113,14 +124,14 @@ async function handleEventAsync(e: Event | PointerEvent) {
   // クリックの場合
   if (e.type === 'click' && e.target !== null) {
     // ヘッダー内クリック？
-    const $headerInner = document.querySelector<HTMLDivElement>(selector.headerMenu)
+    const $headerInner = $('headerMenu')
     if (!$headerInner?.contains(e.target as Node)) {
       console.info('Skip: not header clicked.')
       return
     }
 
     // ヘッダー内リンクのクリック？
-    const $headerLinks = Array.from(document.querySelectorAll(selector.linksInHeader))
+    const $headerLinks = $$('linksInHeader')
     if ($headerLinks.some(($el) => $el.contains(e.target as Node))) {
       console.info('Skip: invalid header click.')
       return
@@ -133,7 +144,7 @@ async function handleEventAsync(e: Event | PointerEvent) {
   standby()
 
   // リロード
-  const reload = location.pathname === '/home' ? reloadTimelineForHome : reloadTimeline
+  const reload = location.pathname === '/home' ? reloadTimelineForHome : reloadTimelineForOther
   reload()
 }
 
@@ -142,15 +153,27 @@ async function handleEventAsync(e: Event | PointerEvent) {
  */
 function handleEvent(e: Event | PointerEvent) {
   console.group(e.type)
-  handleEventAsync(e).finally(console.groupEnd)
+  reloadTimeline(e).finally(console.groupEnd)
 }
 
 /**
- * install styles
+ * マウスイベントハンドラ
+ */
+function handleMouseEvent(e: MouseEvent) {
+  const height = e.type === 'mouseenter' || $('sidebar') ? '100%' : '53px'
+  $('headerMenuWrapper')?.style.setProperty('height', height, 'important')
+  if (e.type === 'mouseenter') {
+    console.group(e.type)
+    reloadTimeline(e).finally(console.groupEnd)
+  }
+}
+
+/**
+ * スタイル定義
  */
 function installStyles() {
   const id = 'ex-tw-reloader'
-  if ($(`#${id}`) !== null) {
+  if ($('ex') !== null) {
     return
   }
 
@@ -179,41 +202,16 @@ function installStyles() {
 }
 
 /**
- * メニューの表示切替
+ * イベントハンドラ登録
  */
-function handleHeaderMouseEvent(e: MouseEvent) {
-  if (!(e.target instanceof Node)) {
-    return
-  }
-
-  const $header = $(selector.header)
-  const $menuWrapper = $(selector.headerMenuWrapper)
-
-  if ($header.contains(e.target) && $menuWrapper.clientHeight === 53) {
-    $menuWrapper.style.setProperty('height', '100%', 'important')
-    console.group(e.type)
-    handleEventAsync(e).finally(console.groupEnd)
-    return
-  }
-
-  if (!$header.contains(e.target) && $menuWrapper.clientHeight !== 53) {
-    $(selector.headerMenuWrapper).style.setProperty('height', '53px', 'important')
-  }
-}
-
-/**
- * イベントリスナ登録
- */
-function installScript() {
+function installEventHandler() {
   window.addEventListener('focus', handleEvent)
   window.addEventListener('click', handleEvent)
   window.addEventListener('visibilitychange', handleEvent)
-
-  window.addEventListener('mouseover', handleHeaderMouseEvent)
-  window.addEventListener('mouseout', handleHeaderMouseEvent)
+  document.addEventListener('mouseenter', handleMouseEvent)
+  document.addEventListener('mouseleave', handleMouseEvent)
 }
 
 installStyles()
-installScript()
-
+installEventHandler()
 standby()

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Twitter Reloader
 // @namespace    https://github.com/thosoyama
-// @version      1.1.1
+// @version      1.2.0
 // @description  フォーカス時にリロード
 // @author       https://github.com/thosoyama
 // @homepage     https://github.com/thosoyama/userscript
@@ -23,7 +23,9 @@
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
+    const exId = 'ex-tw-reloader';
     const selector = {
+        ex: `#${exId}`,
         timeline: 'div[aria-label="ホームタイムライン"]',
         column: 'div[aria-label="ホームタイムライン"] > div > div > div > div > div > div > div',
         header: 'header',
@@ -32,12 +34,16 @@
         headerMenu: 'header > div > div > div',
         linksInHeader: 'header >div > div > div > div',
         mainHeader: 'main h2',
+        sidebar: 'div[data-testid="sidebarColumn"]',
         hasNotSidebar: 'div:not(:has(div[data-testid="sidebarColumn"]))',
         headerIsMin: 'header > div:is()',
     };
     let isReady = false;
-    function $(selector, target = window.document) {
-        return target.querySelector(selector);
+    function $(key, target = window.document) {
+        return target.querySelector(selector[key]);
+    }
+    function $$(key, target = window.document) {
+        return Array.from(target.querySelectorAll(selector[key]));
     }
     function standby(ms = 20000) {
         isReady = false;
@@ -47,20 +53,20 @@
         }, ms));
     }
     async function reloadTimelineForHome() {
-        const $timeline = document.querySelector(selector.timeline);
+        const $timeline = $('timeline');
         if ($timeline === null) {
             return;
         }
         $timeline.style.transition = 'opacity 250ms ease-out';
         $timeline.style.opacity = '0';
-        document.querySelector(selector.mainHeader)?.parentElement?.parentElement?.click();
+        $('mainHeader')?.parentElement?.parentElement?.click();
         await timeout(500);
         scrollTo(0, 0);
         $timeline.style.transition = 'opacity 250ms ease-in';
         $timeline.style.opacity = '1';
     }
-    async function reloadTimeline() {
-        const $timeline = document.querySelector(selector.timeline);
+    async function reloadTimelineForOther() {
+        const $timeline = $('timeline');
         if ($timeline === null) {
             return;
         }
@@ -73,7 +79,7 @@
         $timeline.style.transition = 'opacity 250ms ease-in';
         $timeline.style.opacity = '1';
     }
-    async function handleEventAsync(e) {
+    async function reloadTimeline(e) {
         if (!isReady) {
             console.info('Skip: not ready.');
             return;
@@ -87,18 +93,18 @@
             console.info('Skip: scrolled by user.');
             return;
         }
-        const $timeline = document.querySelector(selector.timeline);
+        const $timeline = $('timeline');
         if ($timeline === null) {
             console.info('Skip: no such timeline element.');
             return;
         }
         if (e.type === 'click' && e.target !== null) {
-            const $headerInner = document.querySelector(selector.headerMenu);
+            const $headerInner = $('headerMenu');
             if (!$headerInner?.contains(e.target)) {
                 console.info('Skip: not header clicked.');
                 return;
             }
-            const $headerLinks = Array.from(document.querySelectorAll(selector.linksInHeader));
+            const $headerLinks = $$('linksInHeader');
             if ($headerLinks.some(($el) => $el.contains(e.target))) {
                 console.info('Skip: invalid header click.');
                 return;
@@ -106,16 +112,24 @@
         }
         console.info('Start reloading.');
         standby();
-        const reload = location.pathname === '/home' ? reloadTimelineForHome : reloadTimeline;
+        const reload = location.pathname === '/home' ? reloadTimelineForHome : reloadTimelineForOther;
         reload();
     }
     function handleEvent(e) {
         console.group(e.type);
-        handleEventAsync(e).finally(console.groupEnd);
+        reloadTimeline(e).finally(console.groupEnd);
+    }
+    function handleMouseEvent(e) {
+        const height = e.type === 'mouseenter' || $('sidebar') ? '100%' : '53px';
+        $('headerMenuWrapper')?.style.setProperty('height', height, 'important');
+        if (e.type === 'mouseenter') {
+            console.group(e.type);
+            reloadTimeline(e).finally(console.groupEnd);
+        }
     }
     function installStyles() {
         const id = 'ex-tw-reloader';
-        if ($(`#${id}`) !== null) {
+        if ($('ex') !== null) {
             return;
         }
         const style = document.createElement('style');
@@ -141,31 +155,15 @@
   `;
         document.head.append(style);
     }
-    function handleHeaderMouseEvent(e) {
-        if (!(e.target instanceof Node)) {
-            return;
-        }
-        const $header = $(selector.header);
-        const $menuWrapper = $(selector.headerMenuWrapper);
-        if ($header.contains(e.target) && $menuWrapper.clientHeight === 53) {
-            $menuWrapper.style.setProperty('height', '100%', 'important');
-            console.group(e.type);
-            handleEventAsync(e).finally(console.groupEnd);
-            return;
-        }
-        if (!$header.contains(e.target) && $menuWrapper.clientHeight !== 53) {
-            $(selector.headerMenuWrapper).style.setProperty('height', '53px', 'important');
-        }
-    }
-    function installScript() {
+    function installEventHandler() {
         window.addEventListener('focus', handleEvent);
         window.addEventListener('click', handleEvent);
         window.addEventListener('visibilitychange', handleEvent);
-        window.addEventListener('mouseover', handleHeaderMouseEvent);
-        window.addEventListener('mouseout', handleHeaderMouseEvent);
+        document.addEventListener('mouseenter', handleMouseEvent);
+        document.addEventListener('mouseleave', handleMouseEvent);
     }
     installStyles();
-    installScript();
+    installEventHandler();
     standby();
 
 })();
