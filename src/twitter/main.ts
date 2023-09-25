@@ -210,6 +210,7 @@ function handleMouseEvent(e: MouseEvent) {
   const ev = e
   if (ev.type === 'mouseleave') {
     $('headerMenuWrapper')?.style.setProperty('height', '53px', 'important')
+    clearTimeout(timer)
     return
   }
 

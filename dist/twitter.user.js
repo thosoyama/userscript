@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Twitter Reloader
 // @namespace    https://github.com/thosoyama
-// @version      1.3.4
+// @version      1.3.6
 // @description  フォーカス時にリロード
 // @author       https://github.com/thosoyama
 // @homepage     https://github.com/thosoyama/userscript
@@ -147,6 +147,7 @@
         const ev = e;
         if (ev.type === 'mouseleave') {
             $('headerMenuWrapper')?.style.setProperty('height', '53px', 'important');
+            clearTimeout(timer);
             return;
         }
         clearTimeout(timer);
