@@ -200,12 +200,18 @@ function handleEvent(e: Event | PointerEvent) {
 }
 
 /**
- * マウスイベントハンドラ
+ * マウスエンターイベントハンドラ
  */
 function handleMouseEvent(e: MouseEvent) {
+  if ($('sidebar')) {
+    return
+  }
+
   const ev = e
-  const height = ev.type === 'mouseenter' || $('sidebar') ? '100%' : '53px'
-  $('headerMenuWrapper')?.style.setProperty('height', height, 'important')
+  if (ev.type === 'mouseleave') {
+    $('headerMenuWrapper')?.style.setProperty('height', '53px', 'important')
+    return
+  }
 
   // 1秒マウスオーバーでリロード
   clearTimeout(timer)
@@ -218,6 +224,19 @@ function handleMouseEvent(e: MouseEvent) {
       }
     }, 1000)
   }
+}
+
+/**
+ * マウスムーブイベントハンドラ
+ */
+function handleMouseMoveEvent(e: MouseEvent) {
+  if ($('sidebar')) {
+    return
+  }
+  const { x } = e
+  const headerWidth = $('headerMenuWrapper')?.getBoundingClientRect().width ?? 68
+  const height = x > 0 && x <= headerWidth ? '100%' : '53px'
+  $('headerMenuWrapper')?.style.setProperty('height', height, 'important')
 }
 
 /**
@@ -243,6 +262,7 @@ function installStyles() {
     }
     ${selector.hasNotSidebar} ${selector.headerMenu} {
       background-color: ${hex2rgb(themeColor, 0.75)} !important;
+      cursor: pointer;
     }
     ${selector.hasNotSidebar} ${selector.column} {
       padding-left: 95px !important;
@@ -263,6 +283,7 @@ function installEventHandler() {
   window.addEventListener('visibilitychange', handleEvent)
   document.addEventListener('mouseenter', handleMouseEvent)
   document.addEventListener('mouseleave', handleMouseEvent)
+  document.addEventListener('mousemove', handleMouseMoveEvent)
 }
 
 installStyles()

@@ -141,9 +141,14 @@
         reloadTimeline(e).finally(console.groupEnd);
     }
     function handleMouseEvent(e) {
+        if ($('sidebar')) {
+            return;
+        }
         const ev = e;
-        const height = ev.type === 'mouseenter' || $('sidebar') ? '100%' : '53px';
-        $('headerMenuWrapper')?.style.setProperty('height', height, 'important');
+        if (ev.type === 'mouseleave') {
+            $('headerMenuWrapper')?.style.setProperty('height', '53px', 'important');
+            return;
+        }
         clearTimeout(timer);
         if (ev.type === 'mouseenter') {
             timer = setTimeout(() => {
@@ -154,6 +159,15 @@
                 }
             }, 1000);
         }
+    }
+    function handleMouseMoveEvent(e) {
+        if ($('sidebar')) {
+            return;
+        }
+        const { x } = e;
+        const headerWidth = $('headerMenuWrapper')?.getBoundingClientRect().width ?? 68;
+        const height = x > 0 && x <= headerWidth ? '100%' : '53px';
+        $('headerMenuWrapper')?.style.setProperty('height', height, 'important');
     }
     function installStyles() {
         const id = 'ex-tw-reloader';
@@ -174,6 +188,7 @@
     }
     ${selector.hasNotSidebar} ${selector.headerMenu} {
       background-color: ${hex2rgb(themeColor, 0.75)} !important;
+      cursor: pointer;
     }
     ${selector.hasNotSidebar} ${selector.column} {
       padding-left: 95px !important;
@@ -190,6 +205,7 @@
         window.addEventListener('visibilitychange', handleEvent);
         document.addEventListener('mouseenter', handleMouseEvent);
         document.addEventListener('mouseleave', handleMouseEvent);
+        document.addEventListener('mousemove', handleMouseMoveEvent);
     }
     installStyles();
     installEventHandler();
