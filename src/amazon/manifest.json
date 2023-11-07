@@ -1,0 +1,17 @@
+{
+  "name": "Amazon",
+  "namespace": "https://github.com/thosoyama",
+  "version": "1.0.0",
+  "description": "Amazon",
+  "author": "https://github.com/thosoyama",
+  "homepage": "https://github.com/thosoyama/userscript",
+  "homepageURL": "https://github.com/thosoyama/userscript",
+  "updateURL": "https://github.com/thosoyama/userscript/raw/master/dist/amazon.user.js",
+  "downloadURL": "https://github.com/thosoyama/userscript/raw/master/dist/amazon.user.js",
+  "supportURL": "https://github.com/thosoyama/userscript/issues",
+  "match": "https://www.amazon.co.jp/*&pg=*",
+  "icon": "https://www.google.com/s2/favicons?sz=64&domain=amazon.co.jp",
+  "grant": "none",
+  "run-at": "document-idle",
+  "noframes": true
+}
