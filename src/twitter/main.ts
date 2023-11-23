@@ -45,7 +45,9 @@ function $$<T extends HTMLElement>(
 /**
  * 16進カラーコードからrgbaに変換
  */
-export const hex2rgb = (hex: string, alpha?: number) => {
+const hex2rgb = (_hex: string, alpha?: number) => {
+  let hex = _hex
+
   // 先頭のハッシュ記号を削る
   if (hex.startsWith('#')) {
     hex = hex.slice(1)
@@ -234,9 +236,13 @@ function handleMouseMoveEvent(e: MouseEvent) {
   if ($('sidebar')) {
     return
   }
-  const { x } = e
+  const { x, y } = e
   const headerWidth = $('headerMenuWrapper')?.getBoundingClientRect().width ?? 68
-  const height = x > 0 && x <= headerWidth ? '100%' : '53px'
+  const visible = $('headerMenuWrapper')?.style.height === '100%'
+  const height =
+    (x > 0 && x <= headerWidth && y >= 0 && y <= 53) || (visible && x > 0 && x <= headerWidth)
+      ? '100%'
+      : '53px'
   $('headerMenuWrapper')?.style.setProperty('height', height, 'important')
 }
 

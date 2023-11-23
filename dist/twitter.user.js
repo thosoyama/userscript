@@ -16,7 +16,7 @@
 // @noframes
 // ==/UserScript==
 
-(function (exports) {
+(function () {
     'use strict';
 
     function timeout(ms) {
@@ -46,7 +46,8 @@
     function $$(key, target = window.document) {
         return Array.from(target.querySelectorAll(selector[key]));
     }
-    const hex2rgb = (hex, alpha) => {
+    const hex2rgb = (_hex, alpha) => {
+        let hex = _hex;
         if (hex.startsWith('#')) {
             hex = hex.slice(1);
         }
@@ -165,9 +166,12 @@
         if ($('sidebar')) {
             return;
         }
-        const { x } = e;
+        const { x, y } = e;
         const headerWidth = $('headerMenuWrapper')?.getBoundingClientRect().width ?? 68;
-        const height = x > 0 && x <= headerWidth ? '100%' : '53px';
+        const visible = $('headerMenuWrapper')?.style.height === '100%';
+        const height = (x > 0 && x <= headerWidth && y >= 0 && y <= 53) || (visible && x > 0 && x <= headerWidth)
+            ? '100%'
+            : '53px';
         $('headerMenuWrapper')?.style.setProperty('height', height, 'important');
     }
     function installStyles() {
@@ -212,8 +216,4 @@
     installEventHandler();
     standby();
 
-    exports.hex2rgb = hex2rgb;
-
-    return exports;
-
-})({});
+})();
